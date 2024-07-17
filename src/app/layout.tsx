@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
 import type { Metadata } from "next";
 
-import { AppBar, Toolbar } from "@mui/material";
 import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 
-import theme from "@/theme";
-import Typography from "@mui/material/Typography";
+import { mainTheme } from "@/themes";
+import StoreProvider from "@/app/StoreProvider";
+import AlertToast from "@/components/AlertToast";
 
 export const metadata: Metadata = {
   title: "Compartytion",
@@ -20,18 +20,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>
-        <AppRouterCacheProvider>
-          <CssVarsProvider theme={theme}>
-            <AppBar>
-              <Toolbar>
-                <Typography variant={"h6"}>Compartytion</Typography>
-              </Toolbar>
-            </AppBar>
-            <Toolbar />
-            <main>{children}</main>
-          </CssVarsProvider>
-        </AppRouterCacheProvider>
+      <body style={{ margin: 0 }}>
+        <StoreProvider>
+          <AppRouterCacheProvider>
+            <CssVarsProvider theme={mainTheme}>
+              {children}
+              <AlertToast />
+            </CssVarsProvider>
+          </AppRouterCacheProvider>
+        </StoreProvider>
       </body>
     </html>
   );
