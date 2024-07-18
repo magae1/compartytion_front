@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import type { Metadata } from "next";
-
 import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 

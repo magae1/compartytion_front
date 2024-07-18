@@ -1,17 +1,11 @@
 "use client";
 import { ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
-
-import {
-  AppBar,
-  Button,
-  Stack,
-  Toolbar,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Button, Stack, Toolbar, Typography, useTheme } from "@mui/material";
 import { ArrowForward } from "@mui/icons-material";
 import _ from "underscore";
+
+import { DefaultAppBar } from "@/components/styles";
 
 const CustomAppBar = ({ children }: { children: ReactNode }) => {
   const theme = useTheme();
@@ -31,21 +25,15 @@ const CustomAppBar = ({ children }: { children: ReactNode }) => {
     };
   }, []);
   return (
-    <AppBar
+    <DefaultAppBar
       sx={{
-        backgroundColor:
-          theme.palette.mode === "light"
-            ? "rgba(255,255,255, 0.8)"
-            : "rgba(0,0,0,0.8)",
-        color: theme.palette.text.primary,
         boxShadow: borderOn
           ? `${theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.2) " : " rgba(255,255,255,0.2)"} 0px 1px 2px`
           : "none",
-        backdropFilter: "blur(16px)",
       }}
     >
       {children}
-    </AppBar>
+    </DefaultAppBar>
   );
 };
 

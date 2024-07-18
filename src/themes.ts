@@ -1,6 +1,5 @@
 "use client";
 import { Nanum_Gothic } from "next/font/google";
-
 import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 
 const nanumGothic = Nanum_Gothic({
@@ -19,6 +18,9 @@ export const mainTheme = extendTheme({
 });
 
 export const authTheme = extendTheme({
+  typography: {
+    fontFamily: nanumGothic.style.fontFamily,
+  },
   components: {
     MuiButton: {
       styleOverrides: {
