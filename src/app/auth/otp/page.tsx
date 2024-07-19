@@ -1,15 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  OutlinedInput,
-  Stack,
-} from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -20,6 +12,8 @@ import { mainFetcher } from "@/fetchers";
 import { useAppDispatch } from "@/redux/hooks";
 import { openAlert } from "@/redux/slices/alertSlice";
 import FancyTimer, { FanyTimerType } from "@/components/FancyTimer";
+import AuthInput from "@/app/auth/_components/AuthInput";
+import SubmitButton from "@/app/auth/_components/SubmitButton";
 
 type OtpSchemaType = z.infer<typeof otpSchema>;
 
@@ -37,7 +31,7 @@ export default function Page(props: Props) {
     handleSubmit,
     setError,
     getValues,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<OtpSchemaType>({
     defaultValues: {
       email: email ?? "",
@@ -89,39 +83,31 @@ export default function Page(props: Props) {
 
   return (
     <Stack spacing={1.5} component={"form"} onSubmit={onSubmit}>
-      <FormControl error={!!errors.email}>
-        <InputLabel>이메일</InputLabel>
-        <OutlinedInput
-          {...register("email")}
-          placeholder={"이메일 주소를 입력해주세요."}
-          autoComplete={"username"}
-        />
-        <FormHelperText>{errors.email?.message}</FormHelperText>
-      </FormControl>
-      <FormControl error={!!errors.otp}>
-        <InputLabel>OTP</InputLabel>
-        <Box
-          sx={{ display: "grid", gridTemplateColumns: "1fr 64px", gap: "2px" }}
-        >
-          <OutlinedInput
-            {...register("otp")}
-            placeholder={"OTP를 입력해주세요."}
-            autoComplete={"one-time-code"}
-          />
+      <AuthInput
+        label={"이메일"}
+        field_error={errors.email}
+        placeholder={"이메일을 입력해주세요."}
+        autoComplete={"username"}
+        {...register("email")}
+      />
+      <AuthInput
+        label={"OTP"}
+        field_error={errors.otp}
+        placeholder={"OTP를 입력해주세요."}
+        autoComplete={"one-time-code"}
+        {...register("otp")}
+        button={
           <Button
             variant={"outlined"}
             onClick={() => requestOTP()}
-            sx={{ height: "43px", marginTop: "8px", padding: "2px 4px" }}
+            sx={{ height: "43px", marginTop: "11px", padding: "2px 4px" }}
           >
             재전송
           </Button>
-        </Box>
-        <Box sx={{ display: "grid", gridTemplateColumns: "1fr 32px" }}>
-          <FormHelperText>{errors.otp?.message}</FormHelperText>
-          <FancyTimer variant={"caption"} ref={timerRef} />
-        </Box>
-      </FormControl>
-      <Button type={"submit"}>확인</Button>
+        }
+        helper_node={<FancyTimer variant={"caption"} ref={timerRef} />}
+      />
+      <SubmitButton disabled={isSubmitting}>확인</SubmitButton>
     </Stack>
   );
 }

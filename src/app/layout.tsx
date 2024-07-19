@@ -6,6 +6,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { mainTheme } from "@/themes";
 import StoreProvider from "@/app/StoreProvider";
 import AlertToast from "@/components/AlertToast";
+import TokenRefresher from "@/app/TokenRefresher";
 
 export const metadata: Metadata = {
   title: "Compartytion",
@@ -21,12 +22,14 @@ export default function RootLayout({
     <html lang="ko">
       <body style={{ margin: 0 }}>
         <StoreProvider>
-          <AppRouterCacheProvider>
-            <CssVarsProvider theme={mainTheme}>
-              {children}
-              <AlertToast />
-            </CssVarsProvider>
-          </AppRouterCacheProvider>
+          <TokenRefresher>
+            <AppRouterCacheProvider>
+              <CssVarsProvider theme={mainTheme}>
+                {children}
+                <AlertToast />
+              </CssVarsProvider>
+            </AppRouterCacheProvider>
+          </TokenRefresher>
         </StoreProvider>
       </body>
     </html>

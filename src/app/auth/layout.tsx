@@ -2,15 +2,13 @@ import { ReactNode } from "react";
 import Link from "next/link";
 import { Box, Container, Grid, Toolbar, Typography } from "@mui/material";
 import { Home } from "@mui/icons-material";
-import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
 
-import { authTheme } from "@/themes";
-import SocialAuth from "@/components/SocialAuth";
+import SocialAuth from "@/app/auth/_components/SocialAuth";
 import { DefaultAppBar } from "@/components/styles";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <CssVarsProvider theme={authTheme}>
+    <>
       <DefaultAppBar>
         <Container maxWidth={"lg"}>
           <Toolbar>
@@ -43,6 +41,6 @@ export default function Layout({ children }: { children: ReactNode }) {
           </Grid>
         </Container>
       </Box>
-    </CssVarsProvider>
+    </>
   );
 }

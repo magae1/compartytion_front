@@ -1,13 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import alertReducer from "@/redux/slices/alertSlice";
-import jwtSReducer from "@/redux/slices/jwtSlice";
 
 export const makeStore = () =>
   configureStore({
     reducer: {
       alert: alertReducer,
-      jwt: jwtSReducer,
     },
   });
 
