@@ -1,54 +1,27 @@
-import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  OutlinedInput,
-  OutlinedInputProps,
-} from "@mui/material";
-import { FieldError } from "react-hook-form";
-import { forwardRef, ReactNode, Ref } from "react";
+import { ReactNode } from "react";
+import { InputLabel, OutlinedInput, OutlinedInputProps } from "@mui/material";
 
 interface Props extends OutlinedInputProps {
-  label: string;
-  field_error?: FieldError;
-  button?: ReactNode;
-  helper_node?: ReactNode;
+  label_str: string;
+  children: ReactNode;
 }
 
-const AuthInput = forwardRef<Ref<HTMLInputElement>, Props>((props, ref) => {
-  const { label, field_error, button, helper_node } = props;
+export default function AuthInput(props: Props) {
+  const { label_str, children } = props;
   return (
-    <FormControl error={!!field_error}>
-      <InputLabel shrink={true} disableAnimation={true} margin={"dense"}>
-        {label}
+    <>
+      <InputLabel shrink disableAnimation margin={"dense"}>
+        {label_str}
       </InputLabel>
-      <div style={{ display: "flex", flexGrow: 1 }}>
-        <OutlinedInput
-          {...props}
-          ref={ref}
-          inputProps={{
-            style: { padding: "10px 7px" },
-          }}
-          fullWidth
-          label={undefined}
-          sx={{ marginTop: "11px" }}
-        />
-        <div>{button}</div>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexGrow: 1,
-          justifyContent: "space-between",
+      <OutlinedInput
+        label={undefined}
+        inputProps={{
+          style: { padding: "10px 7px" },
         }}
-      >
-        <div>
-          <FormHelperText>{field_error?.message}</FormHelperText>
-        </div>
-        <div>{helper_node}</div>
-      </div>
-    </FormControl>
+        sx={{ marginTop: "11px" }}
+        {...props}
+      />
+      {children}
+    </>
   );
-});
-
-export default AuthInput;
+}

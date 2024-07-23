@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import Link from "next/link";
 import { Box, Container, Grid, Toolbar, Typography } from "@mui/material";
-import { Home } from "@mui/icons-material";
 
 import SocialAuth from "@/app/auth/_components/SocialAuth";
 import { DefaultAppBar } from "@/components/styles";
@@ -10,20 +9,16 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>
       <DefaultAppBar>
-        <Container maxWidth={"lg"}>
+        <Container maxWidth={"lg"} disableGutters>
           <Toolbar>
             <Link href={"/"} style={{ color: "inherit" }}>
-              <Box style={{ display: "flex" }}>
-                <Home />
-                <Typography sx={{ ml: 1, fontWeight: 700 }}>
-                  Compartytion
-                </Typography>
-              </Box>
+              <Typography sx={{ ml: 1, fontWeight: 700 }}>
+                Compartytion
+              </Typography>
             </Link>
           </Toolbar>
         </Container>
       </DefaultAppBar>
-      <Toolbar />
       <Box flexGrow={1}>
         <Box height={{ xs: "8vh", sm: "16vh", md: "24vh" }}></Box>
         <Container maxWidth={"md"}>

@@ -15,10 +15,9 @@ export const logInSchema = authSchema.extend({
     })
     .min(8, { message: "최소 8자 이상의 비밀번호가 필요합니다." })
     .regex(/(?=.*[0-9])/, { message: "하나 이상의 숫자가 필요합니다." })
-    .regex(/(?=.*[a-z])/, {
-      message: "하나 이상의 영문 소문자가 필요합니다.",
-    })
-    .regex(/(?=.*[A-Z])/, { message: "하나 이상의 영문 대문자가 필요합니다." }),
+    .regex(/(?=.*[a-zA-Z])/, {
+      message: "하나 이상의 영문자가 필요합니다.",
+    }),
 });
 
 export const otpSchema = authSchema.extend({

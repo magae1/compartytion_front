@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
 import type { Metadata } from "next";
+import { Box } from "@mui/material";
 import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 
 import { mainTheme } from "@/themes";
 import StoreProvider from "@/app/StoreProvider";
 import AlertToast from "@/components/AlertToast";
-import TokenRefresher from "@/app/TokenRefresher";
 
 export const metadata: Metadata = {
   title: "Compartytion",
@@ -20,18 +20,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body style={{ margin: 0 }}>
+      <Box
+        component={"body"}
+        sx={{
+          m: 0,
+          minHeight: "100vh",
+          bgcolor: "var(--mui-palette-background-default)",
+        }}
+      >
         <StoreProvider>
-          <TokenRefresher>
-            <AppRouterCacheProvider>
-              <CssVarsProvider theme={mainTheme}>
-                {children}
-                <AlertToast />
-              </CssVarsProvider>
-            </AppRouterCacheProvider>
-          </TokenRefresher>
+          <AppRouterCacheProvider>
+            <CssVarsProvider theme={mainTheme}>
+              {children}
+              <AlertToast />
+            </CssVarsProvider>
+          </AppRouterCacheProvider>
         </StoreProvider>
-      </body>
+      </Box>
     </html>
   );
 }

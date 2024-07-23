@@ -26,9 +26,8 @@ const FancyTimer = forwardRef<FanyTimerType, TypographyProps>((props, ref) => {
     } else if (seconds <= 60) {
       setColor("error.main");
     } else {
-      setColor(undefined);
+      setColor("text.primary");
     }
-    console.log(color);
   }, [seconds]);
 
   return (
