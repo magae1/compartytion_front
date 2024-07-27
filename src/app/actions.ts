@@ -150,3 +150,31 @@ export async function signUp(prevState: any, formData: FormData) {
   }
   redirect(`/auth/login?email=${data.email}&signed_up=${true}`);
 }
+
+export async function getProfile() {
+  const accessToken = cookies().get("access")?.value;
+
+  if (!accessToken) {
+    return {
+      account: "",
+      avatar: null,
+      introduction: null,
+    };
+  }
+
+  const res = await fetch(BASE_URL + "/profiles/me/", {
+    headers: {
+      ...HEADERS,
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!res.ok) {
+    return {
+      account: "",
+      avatar: null,
+      introduction: null,
+    };
+  }
+  return await res.json();
+}

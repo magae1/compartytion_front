@@ -24,12 +24,12 @@ export const mainTheme = extendTheme({
   colorSchemes: {
     light: {
       palette: {
-        header: "rgba(255,255,255, 0.8)",
+        header: "rgba(252,252,252, 0.8)",
       },
     },
     dark: {
       palette: {
-        header: "rgba(0,0,0, 0.8)",
+        header: "rgba(3,3,3, 0.8)",
       },
     },
   },

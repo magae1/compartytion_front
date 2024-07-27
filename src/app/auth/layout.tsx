@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import Link from "next/link";
 import { Box, Container, Grid, Toolbar, Typography } from "@mui/material";
 
@@ -9,17 +9,16 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>
       <DefaultAppBar>
-        <Container maxWidth={"lg"} disableGutters>
-          <Toolbar>
+        <Toolbar sx={{ height: "64px" }}>
+          <Container disableGutters>
             <Link href={"/"} style={{ color: "inherit" }}>
-              <Typography sx={{ ml: 1, fontWeight: 700 }}>
-                Compartytion
-              </Typography>
+              <Typography sx={{ fontWeight: 600 }}>Compartytion</Typography>
             </Link>
-          </Toolbar>
-        </Container>
+          </Container>
+        </Toolbar>
       </DefaultAppBar>
-      <Box flexGrow={1}>
+      <Box component={"main"}>
+        <Toolbar sx={{ height: "64px" }} />
         <Box height={{ xs: "8vh", sm: "16vh", md: "24vh" }}></Box>
         <Container maxWidth={"md"}>
           <Grid container spacing={2}>

@@ -2,32 +2,36 @@ import React from "react";
 import Link from "next/link";
 import {
   Box,
-  Button,
   Stack,
   Toolbar,
   Typography,
   Link as MuiLink,
+  Button,
 } from "@mui/material";
+import { ArrowForward } from "@mui/icons-material";
 import dayjs from "dayjs";
 
-import { DefaultAppBar } from "@/components/styles";
+import HomeAppBar from "@/components/HomeAppBar";
 
 export default function Page() {
   return (
     <>
-      <DefaultAppBar>
+      <HomeAppBar>
         <Toolbar>
           <Link href={"/"} style={{ color: "inherit" }}>
-            <Typography sx={{ ml: 1, fontWeight: 700 }}>
-              Compartytion
-            </Typography>
+            <Typography sx={{ fontWeight: 600 }}>Compartytion</Typography>
           </Link>
-          <Button component={Link} variant={"outlined"} href={"/auth"}>
-            로그인하러 가기
+          <Button
+            component={Link}
+            variant={"outlined"}
+            href={"/auth"}
+            endIcon={<ArrowForward />}
+          >
+            로그인
           </Button>
         </Toolbar>
-      </DefaultAppBar>
-      <Box>
+      </HomeAppBar>
+      <Box component={"main"}>
         <Toolbar />
         <Stack>
           <Box height={1666}>123</Box>

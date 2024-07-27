@@ -1,6 +1,5 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import type { Metadata } from "next";
-import { Box } from "@mui/material";
 import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 
@@ -20,12 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <Box
-        component={"body"}
-        sx={{
-          m: 0,
-          minHeight: "100vh",
-          bgcolor: "var(--mui-palette-background-default)",
+      <body
+        style={{
+          margin: 0,
+          backgroundColor: "var(--mui-palette-background-default)",
         }}
       >
         <StoreProvider>
@@ -36,7 +33,7 @@ export default function RootLayout({
             </CssVarsProvider>
           </AppRouterCacheProvider>
         </StoreProvider>
-      </Box>
+      </body>
     </html>
   );
 }
