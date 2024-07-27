@@ -1,9 +1,14 @@
 "use client";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
-  Avatar,
   Box,
   Button,
   ButtonBase,
@@ -22,24 +27,64 @@ import {
   Typography,
   useColorScheme,
 } from "@mui/material";
-import { Close, Dashboard, Settings } from "@mui/icons-material";
+import { Close, Dashboard, Logout, Settings } from "@mui/icons-material";
 
 import { ProfileType } from "@/types";
 import { getProfile } from "@/app/actions";
+import ProfileAvatar from "@/components/ProfileAvatar";
 
 const initialState: ProfileType = {
   account: "",
   avatar: null,
   introduction: null,
+  hidden_name: null,
+  displayed_name: null,
 };
 
 export default function AccountDrawer() {
+  const router = useRouter();
   const mounted = useRef(false);
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState(initialState);
 
   const closeDrawer = useCallback(() => setOpen(false), []);
   const openDrawer = useCallback(() => setOpen(true), []);
+
+  const logOut = useCallback(async () => {
+    await fetch("/api/logout/", { method: "POST" });
+    router.refresh();
+  }, []);
+
+  const listItems = useMemo(
+    () => (
+      <>
+        <ListItemButton component={Link} href={"/dashboard"}>
+          <ListItemIcon>
+            <Dashboard />
+          </ListItemIcon>
+          <ListItemText primary={"대시보드"} />
+        </ListItemButton>
+        <ListItemButton component={Link} href={"/settings"}>
+          <ListItemIcon>
+            <Settings />
+          </ListItemIcon>
+          <ListItemText primary={"설정"} />
+        </ListItemButton>
+        <ListItemButton onClick={logOut}>
+          <ListItemIcon>
+            <Logout />
+          </ListItemIcon>
+          <ListItemText primary={"로그아웃"} />
+        </ListItemButton>
+        <Divider />
+        <ListSubheader>테마</ListSubheader>
+        <ListItem>
+          <ThemeSwitch />
+        </ListItem>
+      </>
+    ),
+    [],
+  );
 
   useEffect(() => {
     if (mounted.current) {
@@ -55,18 +100,7 @@ export default function AccountDrawer() {
   return (
     <>
       <ButtonBase sx={{ borderRadius: "100%" }} onClick={openDrawer}>
-        <Avatar>
-          {profile.avatar ? (
-            <Image
-              src={profile.avatar}
-              alt={`${profile.account}'s avatar`}
-              unoptimized
-              fill
-            />
-          ) : (
-            profile.account.at(0)
-          )}
-        </Avatar>
+        <ProfileAvatar avatar_url={profile.avatar} account={profile.account} />
       </ButtonBase>
       <Drawer anchor={"right"} open={open} onClose={closeDrawer}>
         <Box
@@ -84,23 +118,13 @@ export default function AccountDrawer() {
           <List>
             <ListItem sx={{ gap: 2 }}>
               <ListItemAvatar>
-                <Avatar sx={{ height: 64, width: 64 }}>
-                  {profile.avatar ? (
-                    <Image
-                      src={profile.avatar}
-                      alt={`${profile.account}'s avatar`}
-                      unoptimized
-                      fill
-                    />
-                  ) : (
-                    profile.account.at(0)
-                  )}
-                </Avatar>
+                <ProfileAvatar
+                  sx={{ height: 56, width: 56 }}
+                  avatar_url={profile.avatar}
+                  account={profile.account}
+                />
               </ListItemAvatar>
-              <ListItemText
-                primary={profile.account}
-                secondary={profile.introduction}
-              />
+              <ListItemText primary={profile.account} />
             </ListItem>
           </List>
           <List
@@ -112,23 +136,7 @@ export default function AccountDrawer() {
               },
             }}
           >
-            <ListItemButton component={Link} href={"/dashboard"}>
-              <ListItemIcon>
-                <Dashboard />
-              </ListItemIcon>
-              <ListItemText primary={"대시보드"} />
-            </ListItemButton>
-            <ListItemButton component={Link} href={"/settings"}>
-              <ListItemIcon>
-                <Settings />
-              </ListItemIcon>
-              <ListItemText primary={"설정"} />
-            </ListItemButton>
-            <Divider variant={"middle"} />
-            <ListSubheader>테마</ListSubheader>
-            <ListItem>
-              <ThemeSwitch />
-            </ListItem>
+            {listItems}
           </List>
         </Box>
       </Drawer>

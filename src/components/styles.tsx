@@ -18,6 +18,7 @@ export const DefaultAppBar = styled(AppBar)(({ theme }) => ({
   boxShadow: `${theme.vars.palette.divider} 0px 1px 2px`,
   backdropFilter: "blur(16px)",
   backgroundImage: "none",
+  border: "none",
   "& a": {
     textDecoration: "none",
   },

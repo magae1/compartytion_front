@@ -21,6 +21,20 @@ export const mainTheme = extendTheme({
   typography: {
     fontFamily: gothicA1.style.fontFamily,
   },
+  components: {
+    MuiTypography: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.vars.palette.text.primary,
+        }),
+      },
+    },
+    MuiPaper: {
+      defaultProps: {
+        variant: "outlined",
+      },
+    },
+  },
   colorSchemes: {
     light: {
       palette: {
