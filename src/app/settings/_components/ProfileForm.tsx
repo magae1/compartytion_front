@@ -145,9 +145,7 @@ export default function ProfileForm({ profile }: Props) {
             <FormHelperText></FormHelperText>
           </FormInput>
         </FormControl>
-        <Box>
-          <SubmitButton>저장</SubmitButton>
-        </Box>
+        <SubmitButton>변경</SubmitButton>
       </Stack>
     </Box>
   );

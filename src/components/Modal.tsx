@@ -20,7 +20,6 @@ export default function Modal({ children }: { children: ReactNode }) {
         justifyContent: "center",
         px: 1,
       }}
-      onClose={onClose}
     >
       <Box
         sx={{

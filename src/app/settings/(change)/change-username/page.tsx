@@ -1,14 +1,14 @@
 import { Box, Typography } from "@mui/material";
 
-import PasswordForm from "@/app/settings/_components/PasswordForm";
+import UsernameForm from "@/app/settings/_components/UsernameForm";
 
 export default function Page() {
   return (
     <Box maxWidth={360} width={"100%"}>
       <Typography variant={"h4"} my={1}>
-        내 비밀번호 변경
+        내 시용자명 변경
       </Typography>
-      <PasswordForm />
+      <UsernameForm />
     </Box>
   );
 }

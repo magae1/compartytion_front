@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
-import { Box, FormControl, FormHelperText, Stack } from "@mui/material";
+import { FormControl, FormHelperText, Stack } from "@mui/material";
 
 import FormInput from "@/components/FormInput";
 import { changePassword } from "@/app/actions";
@@ -16,28 +16,24 @@ const initialState: {
   new_password?: string[];
   new_password_confirmation?: string[];
   success?: boolean;
-  message?: string;
 } = {};
 
-export default function ChangePasswordForm() {
+export default function PasswordForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [state, formAction] = useFormState(changePassword, initialState);
 
   useEffect(() => {
-    if (state.detail) {
-      dispatch(openAlert({ message: state.detail, severity: "error" }));
-    }
     if (state.success) {
-      dispatch(
-        openAlert({ message: "비밀번호가 변경됐습니다.", severity: "success" }),
-      );
+      dispatch(openAlert({ message: state.detail, severity: "success" }));
       router.back();
+    } else if (state.detail) {
+      dispatch(openAlert({ message: state.detail, severity: "error" }));
     }
   }, [state]);
 
   return (
-    <Stack spacing={1.5} component={"form"} action={formAction} width={"100%"}>
+    <Stack spacing={2} component={"form"} action={formAction} width={"100%"}>
       <FormControl error={!!state.password}>
         <FormInput
           label_str={"현재 비밀번호"}
@@ -74,9 +70,7 @@ export default function ChangePasswordForm() {
           ))}
         </FormInput>
       </FormControl>
-      <Box>
-        <SubmitButton>변경</SubmitButton>
-      </Box>
+      <SubmitButton>변경</SubmitButton>
     </Stack>
   );
 }

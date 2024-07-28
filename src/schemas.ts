@@ -42,9 +42,11 @@ export const signUpSchema = logInSchema
 
 export const changePasswordSchema = z
   .object({
-    password: z.string({
-      required_error: "현재 비밀번호는 반드시 입력해야 합니다.",
-    }),
+    password: z
+      .string({
+        message: "현재 비밀번호는 반드시 입력해야 합니다.",
+      })
+      .min(1, { message: "현재 비밀번호는 반드시 입력해야 합니다." }),
     new_password: z
       .string({
         required_error: "새 비밀번호를 입력해주세요.",
@@ -59,7 +61,7 @@ export const changePasswordSchema = z
     }),
   })
   .refine((data) => data.password !== data.new_password, {
-    message: "현재 비밀번호와 일치합니다..",
+    message: "현재 비밀번호와 일치합니다.",
     path: ["new_password"],
   })
   .refine((data) => data.new_password === data.new_password_confirmation, {

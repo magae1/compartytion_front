@@ -14,19 +14,19 @@ export interface FanyTimerType {
 
 const FancyTimer = forwardRef<FanyTimerType, TypographyProps>((props, ref) => {
   const [seconds, isTimeOver, reset] = useCountDown(0, 1000);
-  const [color, setColor] = useState<string | undefined>(undefined);
+  const [color, setColor] = useState<string>("text.primary");
 
   useImperativeHandle(ref, () => ({
     reset,
   }));
 
   useEffect(() => {
-    if (seconds <= 120) {
-      setColor("warning.main");
-    } else if (seconds <= 60) {
-      setColor("error.main");
-    } else {
+    if (seconds > 120) {
       setColor("text.primary");
+    } else if (seconds > 60) {
+      setColor("warning.main");
+    } else {
+      setColor("error.main");
     }
   }, [seconds]);
 

@@ -2,7 +2,7 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 
-import { authSchema, changePasswordSchema } from "@/schemas";
+import { authSchema, changePasswordSchema, otpSchema } from "@/schemas";
 import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
 
 export async function sendOTP(prevState: any, formData: FormData) {
@@ -25,9 +25,7 @@ export async function sendOTP(prevState: any, formData: FormData) {
     return data;
   }
 
-  return {
-    remaining_time: data.remaining_time,
-  };
+  return { remaining_time: data.remaining_time };
 }
 
 export async function changeProfile(prevStat: any, formData: FormData) {
@@ -45,15 +43,13 @@ export async function changeProfile(prevStat: any, formData: FormData) {
     body: formData,
   });
 
+  const data = await res.json();
   if (!res.ok) {
-    return res.json();
+    return { ...prevStat, ...data };
   }
 
   revalidatePath("/", "layout");
-  return {
-    success: true,
-    detail: "프로필이 변경됐습니다.",
-  };
+  return { ...prevStat, success: true, ...data };
 }
 
 export async function changePassword(prevStat: any, formData: FormData) {
@@ -69,7 +65,7 @@ export async function changePassword(prevStat: any, formData: FormData) {
 
   const accessToken = cookies().get(COOKIE_ACCESS)?.value;
   const res = await fetch(BASE_URL + "/accounts/change_password/", {
-    method: "PUT",
+    method: "PATCH",
     headers: { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` },
     body: JSON.stringify({
       password: validatedFormData.data.password,
@@ -77,10 +73,54 @@ export async function changePassword(prevStat: any, formData: FormData) {
     }),
   });
 
+  const data = await res.json();
   if (!res.ok) {
-    return res.json();
+    return { ...prevStat, ...data };
   }
 
   revalidatePath("/settings", "page");
-  return { success: true, detail: "비밀번호가 변경됐습니다." };
+  return { ...prevStat, success: true, ...data };
+}
+
+export async function changeUsername(prevStat: any, formData: FormData) {
+  const accessToken = cookies().get(COOKIE_ACCESS)?.value;
+  const res = await fetch(BASE_URL + "/accounts/change_username/", {
+    method: "PATCH",
+    headers: { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` },
+    body: JSON.stringify({ username: formData.get("username") }),
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+    return { ...prevStat, ...data };
+  }
+
+  revalidatePath("/settings", "page");
+  return { ...prevStat, success: true, ...data };
+}
+
+export async function changeEmail(prevStat: any, formData: FormData) {
+  const validatedFormData = otpSchema.safeParse({
+    email: formData.get("email"),
+    otp: formData.get("otp"),
+  });
+
+  if (!validatedFormData.success) {
+    return validatedFormData.error.flatten().fieldErrors;
+  }
+
+  const accessToken = cookies().get(COOKIE_ACCESS)?.value;
+  const res = await fetch(BASE_URL + "/accounts/change_email/", {
+    method: "PATCH",
+    headers: { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` },
+    body: JSON.stringify(validatedFormData.data),
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+    return { ...prevStat, ...data };
+  }
+
+  revalidatePath("/settings", "page");
+  return { ...prevStat, success: true, ...data };
 }

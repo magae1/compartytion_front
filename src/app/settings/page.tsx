@@ -131,7 +131,11 @@ function AccountSettings({ account }: { account: AccountType }) {
       </Box>
       <Divider />
       <List disablePadding>
-        <ListItemButton>
+        <ListItemButton
+          component={Link}
+          href={"/settings/change-username"}
+          passHref
+        >
           <ListItemText
             primary={"사용자명 변경"}
             secondary={account.username}
@@ -139,7 +143,11 @@ function AccountSettings({ account }: { account: AccountType }) {
           <ArrowForwardIos />
         </ListItemButton>
         <Divider />
-        <ListItemButton>
+        <ListItemButton
+          component={Link}
+          href={"/settings/change-email"}
+          passHref
+        >
           <ListItemText primary={"이메일 변경"} secondary={email} />
           <ArrowForwardIos />
         </ListItemButton>

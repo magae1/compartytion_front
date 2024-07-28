@@ -11,7 +11,7 @@ export default function EmailForm({ action }: { action: any }) {
   const [state, formAction] = useFormState(action, initialState);
 
   return (
-    <Stack spacing={1.5} component={"form"} action={formAction}>
+    <Stack spacing={2} component={"form"} action={formAction}>
       <FormControl error={!!state.email}>
         <FormInput
           label_str={"이메일"}

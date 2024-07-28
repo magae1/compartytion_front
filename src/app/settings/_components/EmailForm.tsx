@@ -1,38 +1,26 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
+import { useRouter } from "next/navigation";
 import { FormControl, FormHelperText, Stack } from "@mui/material";
 
 import FancyTimer, { FanyTimerType } from "@/components/FancyTimer";
-import SubmitButton from "@/components/SubmitButton";
-import { sendOTP } from "@/app/actions";
+import { changeEmail, sendOTP } from "@/app/actions";
 import FormInput from "@/components/FormInput";
+import SubmitButton from "@/components/SubmitButton";
+import { openAlert } from "@/redux/slices/alertSlice";
+import { useAppDispatch } from "@/redux/hooks";
 
-const initialState: { email?: string[]; otp: string[] } = {
-  otp: ["이메일로 전송된 OTP를 입력해주세요."],
-};
-
+const initialState: { email?: string[]; otp?: string[] } = {};
 const initialSentState: { email?: string[]; remaining_time?: number } = {};
 
-interface Props {
-  email?: string;
-  action: any;
-}
-
-export default function OTPForm({ email, action }: Props) {
-  const mounted = useRef<boolean>(false);
+export default function EmailForm() {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const timerRef = useRef<FanyTimerType | null>(null);
   const otpButtonRef = useRef<HTMLButtonElement>(null);
-  const [state, formAction] = useFormState(action, initialState);
+  const [state, formAction] = useFormState(changeEmail, initialState);
   const [sentState, sendAction] = useFormState(sendOTP, initialSentState);
-
-  useEffect(() => {
-    if (mounted.current) {
-      otpButtonRef.current && otpButtonRef.current.click();
-    } else {
-      mounted.current = true;
-    }
-  }, []);
 
   useEffect(() => {
     if (timerRef.current && sentState.remaining_time) {
@@ -43,16 +31,19 @@ export default function OTPForm({ email, action }: Props) {
     }
   }, [sentState]);
 
+  useEffect(() => {
+    if (state.success) {
+      dispatch(openAlert({ message: state.detail, severity: "success" }));
+      router.back();
+    } else if (state.detail) {
+      dispatch(openAlert({ message: state.detail, severity: "error" }));
+    }
+  }, [state]);
+
   return (
     <Stack spacing={2} component={"form"} action={formAction}>
       <FormControl error={!!state?.email || !!sentState?.email}>
-        <FormInput
-          label_str={"이메일"}
-          name={"email"}
-          defaultValue={email}
-          placeholder={"이메일 주소를 입력해주세요."}
-          autoComplete={"username"}
-        >
+        <FormInput label_str={"이메일"} name={"email"} autoComplete={"email"}>
           {state?.email?.map((v: string) => (
             <FormHelperText key={v}>{v}</FormHelperText>
           ))}
@@ -62,11 +53,10 @@ export default function OTPForm({ email, action }: Props) {
         </FormInput>
       </FormControl>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 64px", gap: 4 }}>
-        <FormControl error={!!state.otp && initialState.otp[0] != state.otp[0]}>
+        <FormControl error={!!state.otp}>
           <FormInput
             label_str={"OTP"}
             name={"otp"}
-            placeholder={"OTP를 입력해주세요."}
             autoComplete={"one-time-code"}
           >
             {state?.otp?.map((v: string) => (
@@ -88,12 +78,12 @@ export default function OTPForm({ email, action }: Props) {
             ref={otpButtonRef}
             sx={{ height: "43px", marginTop: "11px", padding: "2px 4px" }}
           >
-            재전송
+            전송
           </SubmitButton>
           <FancyTimer variant={"caption"} ref={timerRef} />
         </div>
       </div>
-      <SubmitButton>확인</SubmitButton>
+      <SubmitButton>변경</SubmitButton>
     </Stack>
   );
 }
