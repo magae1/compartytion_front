@@ -2,9 +2,8 @@
 import { useFormState } from "react-dom";
 import { FormControl, FormHelperText, Stack } from "@mui/material";
 
-import SubmitButton from "@/app/auth/_components/SubmitButton";
-import { signUp } from "@/app/actions";
-import AuthInput from "@/app/auth/_components/AuthInput";
+import SubmitButton from "@/components/SubmitButton";
+import FormInput from "@/components/FormInput";
 
 const initialState: {
   email?: string[];
@@ -17,32 +16,33 @@ const initialState: {
 
 interface Props {
   email?: string;
+  action: any;
 }
 
-export default function SignUpForm(props: Props) {
-  const [state, formAction] = useFormState(signUp, initialState);
+export default function SignUpForm({ email, action }: Props) {
+  const [state, formAction] = useFormState(action, initialState);
 
   return (
     <Stack spacing={1.5} component={"form"} action={formAction}>
       <FormControl error={!!state.email}>
-        <AuthInput
+        <FormInput
           label_str={"이메일"}
           name={"email"}
           placeholder={"이메일 주소를 입력해주세요."}
           autoComplete={"username"}
-          defaultValue={props.email}
+          defaultValue={email}
         >
           {state?.email?.map((v: string) => (
             <FormHelperText key={v}>{v}</FormHelperText>
           ))}
-        </AuthInput>
+        </FormInput>
       </FormControl>
       <FormControl
         error={
           !!state.username && initialState.username[0] != state.username[0]
         }
       >
-        <AuthInput
+        <FormInput
           label_str={"사용자명"}
           name={"username"}
           placeholder={"사용자명을 입력해주세요."}
@@ -51,10 +51,10 @@ export default function SignUpForm(props: Props) {
           {state?.username?.map((v: string) => (
             <FormHelperText key={v}>{v}</FormHelperText>
           ))}
-        </AuthInput>
+        </FormInput>
       </FormControl>
       <FormControl error={!!state.password}>
-        <AuthInput
+        <FormInput
           label_str={"비밀번호"}
           type={"password"}
           name={"password"}
@@ -64,10 +64,10 @@ export default function SignUpForm(props: Props) {
           {state?.password?.map((v: string) => (
             <FormHelperText key={v}>{v}</FormHelperText>
           ))}
-        </AuthInput>
+        </FormInput>
       </FormControl>
       <FormControl error={!!state.confirm}>
-        <AuthInput
+        <FormInput
           label_str={"비밀번호(확인)"}
           type={"password"}
           name={"confirm"}
@@ -77,7 +77,7 @@ export default function SignUpForm(props: Props) {
           {state?.confirm?.map((v: string) => (
             <FormHelperText key={v}>{v}</FormHelperText>
           ))}
-        </AuthInput>
+        </FormInput>
       </FormControl>
       <SubmitButton>새 계정 만들기</SubmitButton>
     </Stack>

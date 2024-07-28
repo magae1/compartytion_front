@@ -6,7 +6,7 @@ interface Props extends OutlinedInputProps {
   children: ReactNode;
 }
 
-export default function AuthInput(props: Props) {
+export default function FormInput(props: Props) {
   const { label_str, children } = props;
   return (
     <>
@@ -18,7 +18,10 @@ export default function AuthInput(props: Props) {
         inputProps={{
           style: { padding: "10px 7px" },
         }}
-        sx={{ marginTop: "11px" }}
+        sx={{
+          marginTop: "11px",
+          padding: 0,
+        }}
         {...props}
       />
       {children}

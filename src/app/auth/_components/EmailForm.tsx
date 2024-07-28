@@ -2,19 +2,18 @@
 import { useFormState } from "react-dom";
 import { FormControl, FormHelperText, Stack } from "@mui/material";
 
-import SubmitButton from "@/app/auth/_components/SubmitButton";
-import { checkEmail } from "@/app/actions";
-import AuthInput from "@/app/auth/_components/AuthInput";
+import SubmitButton from "@/components/SubmitButton";
+import FormInput from "@/components/FormInput";
 
 const initialState: { email?: string[] } = {};
 
-export default function EmailForm() {
-  const [state, formAction] = useFormState(checkEmail, initialState);
+export default function EmailForm({ action }: { action: any }) {
+  const [state, formAction] = useFormState(action, initialState);
 
   return (
     <Stack spacing={1.5} component={"form"} action={formAction}>
       <FormControl error={!!state.email}>
-        <AuthInput
+        <FormInput
           label_str={"이메일"}
           name={"email"}
           placeholder={"이메일 주소를 입력해주세요."}
@@ -23,7 +22,7 @@ export default function EmailForm() {
           {state?.email?.map((v: string) => (
             <FormHelperText key={v}>{v}</FormHelperText>
           ))}
-        </AuthInput>
+        </FormInput>
       </FormControl>
       <SubmitButton>이메일로 계속</SubmitButton>
     </Stack>

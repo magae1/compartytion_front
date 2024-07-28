@@ -39,3 +39,30 @@ export const signUpSchema = logInSchema
     message: "비밀번호가 일치하지 않습니다.",
     path: ["confirm"],
   });
+
+export const changePasswordSchema = z
+  .object({
+    password: z.string({
+      required_error: "현재 비밀번호는 반드시 입력해야 합니다.",
+    }),
+    new_password: z
+      .string({
+        required_error: "새 비밀번호를 입력해주세요.",
+      })
+      .min(8, { message: "최소 8자 이상의 비밀번호가 필요합니다." })
+      .regex(/(?=.*[0-9])/, { message: "하나 이상의 숫자가 필요합니다." })
+      .regex(/(?=.*[a-zA-Z])/, {
+        message: "하나 이상의 영문자가 필요합니다.",
+      }),
+    new_password_confirmation: z.string({
+      required_error: "새 비밀번호 확인은 반드시 입력해야 합니다.",
+    }),
+  })
+  .refine((data) => data.password !== data.new_password, {
+    message: "현재 비밀번호와 일치합니다..",
+    path: ["new_password"],
+  })
+  .refine((data) => data.new_password === data.new_password_confirmation, {
+    message: "새 비밀번호가 일치하지 않습니다.",
+    path: ["new_password_confirmation"],
+  });

@@ -4,9 +4,9 @@ import { useFormState } from "react-dom";
 import { FormControl, FormHelperText, Stack } from "@mui/material";
 
 import FancyTimer, { FanyTimerType } from "@/components/FancyTimer";
-import SubmitButton from "@/app/auth/_components/SubmitButton";
-import { sendOTP, verifyOTP } from "@/app/actions";
-import AuthInput from "@/app/auth/_components/AuthInput";
+import SubmitButton from "@/components/SubmitButton";
+import { sendOTP } from "@/app/actions";
+import FormInput from "@/components/FormInput";
 
 const initialState: { email?: string[]; otp: string[] } = {
   otp: ["이메일로 전송된 OTP를 입력해주세요."],
@@ -16,13 +16,14 @@ const initialSentState: { email?: string[]; remaining_time?: number } = {};
 
 interface Props {
   email?: string;
+  action: any;
 }
 
-export default function OTPForm(props: Props) {
+export default function OTPForm({ email, action }: Props) {
   const mounted = useRef<boolean>(false);
   const timerRef = useRef<FanyTimerType | null>(null);
   const otpButtonRef = useRef<HTMLButtonElement>(null);
-  const [state, formAction] = useFormState(verifyOTP, initialState);
+  const [state, formAction] = useFormState(action, initialState);
   const [sentState, sendAction] = useFormState(sendOTP, initialSentState);
 
   useEffect(() => {
@@ -45,10 +46,10 @@ export default function OTPForm(props: Props) {
   return (
     <Stack spacing={1.5} component={"form"} action={formAction}>
       <FormControl error={!!state?.email || !!sentState?.email}>
-        <AuthInput
+        <FormInput
           label_str={"이메일"}
           name={"email"}
-          defaultValue={props.email}
+          defaultValue={email}
           placeholder={"이메일 주소를 입력해주세요."}
           autoComplete={"username"}
         >
@@ -58,11 +59,11 @@ export default function OTPForm(props: Props) {
           {sentState?.email?.map((v: string) => (
             <FormHelperText key={v}>{v}</FormHelperText>
           ))}
-        </AuthInput>
+        </FormInput>
       </FormControl>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 64px", gap: 4 }}>
         <FormControl error={!!state.otp && initialState.otp[0] != state.otp[0]}>
-          <AuthInput
+          <FormInput
             label_str={"OTP"}
             name={"otp"}
             placeholder={"OTP를 입력해주세요."}
@@ -71,7 +72,7 @@ export default function OTPForm(props: Props) {
             {state?.otp?.map((v: string) => (
               <FormHelperText key={v}>{v}</FormHelperText>
             ))}
-          </AuthInput>
+          </FormInput>
         </FormControl>
         <div
           style={{

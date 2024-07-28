@@ -1,11 +1,5 @@
 "use client";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -30,22 +24,15 @@ import {
 import { Close, Dashboard, Logout, Settings } from "@mui/icons-material";
 
 import { ProfileType } from "@/types";
-import { getProfile } from "@/app/actions";
 import ProfileAvatar from "@/components/ProfileAvatar";
 
-const initialState: ProfileType = {
-  account: "",
-  avatar: null,
-  introduction: null,
-  hidden_name: null,
-  displayed_name: null,
-};
+interface Props {
+  profileData: ProfileType;
+}
 
-export default function AccountDrawer() {
+export default function AccountDrawer({ profileData }: Props) {
   const router = useRouter();
-  const mounted = useRef(false);
   const [open, setOpen] = useState(false);
-  const [profile, setProfile] = useState(initialState);
 
   const closeDrawer = useCallback(() => setOpen(false), []);
   const openDrawer = useCallback(() => setOpen(true), []);
@@ -86,21 +73,13 @@ export default function AccountDrawer() {
     [],
   );
 
-  useEffect(() => {
-    if (mounted.current) {
-      const initProfile = async () => {
-        setProfile(await getProfile());
-      };
-      initProfile().then();
-    } else {
-      mounted.current = true;
-    }
-  }, []);
-
   return (
     <>
       <ButtonBase sx={{ borderRadius: "100%" }} onClick={openDrawer}>
-        <ProfileAvatar avatar_url={profile.avatar} account={profile.account} />
+        <ProfileAvatar
+          avatar_url={profileData.avatar}
+          account={profileData.account}
+        />
       </ButtonBase>
       <Drawer anchor={"right"} open={open} onClose={closeDrawer}>
         <Box
@@ -120,11 +99,11 @@ export default function AccountDrawer() {
               <ListItemAvatar>
                 <ProfileAvatar
                   sx={{ height: 56, width: 56 }}
-                  avatar_url={profile.avatar}
-                  account={profile.account}
+                  avatar_url={profileData.avatar}
+                  account={profileData.account}
                 />
               </ListItemAvatar>
-              <ListItemText primary={profile.account} />
+              <ListItemText primary={profileData.account} />
             </ListItem>
           </List>
           <List
