@@ -94,7 +94,12 @@ export default function ProfileForm({ profile }: Props) {
         >
           <Avatar sx={{ height: 200, width: 200 }}>
             {imagePath ? (
-              <img height={200} width={200} src={imagePath} />
+              <img
+                height={200}
+                width={200}
+                src={imagePath}
+                style={{ objectFit: "cover" }}
+              />
             ) : (
               profile.account.at(0)
             )}

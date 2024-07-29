@@ -13,6 +13,7 @@ export default function Page(props: Props) {
   const email = searchParams?.email;
 
   async function signUp(prevState: any, formData: FormData) {
+    "use server";
     const validatedFormData = signUpSchema.safeParse({
       email: formData.get("email"),
       password: formData.get("password"),
