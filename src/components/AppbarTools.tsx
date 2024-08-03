@@ -9,27 +9,26 @@ import AccountDrawer from "@/components/AccountDrawer";
 
 export default async function AppbarTools() {
   const accessToken = cookies().get(COOKIE_ACCESS)?.value;
-  if (!accessToken) {
-    return <LoginButton />;
-  }
 
   const res = await fetch(BASE_URL + "/profiles/me/", {
     headers: {
       ...DEFAULT_HEADERS,
       Authorization: `Bearer ${accessToken}`,
     },
+    next: {
+      tags: ["profile"],
+    },
   });
 
-  if (!res.ok) {
-    return <LoginButton />;
+  if (res.ok) {
+    const data: ProfileType = await res.json();
+    return (
+      <Stack direction={"column"} spacing={2}>
+        <AccountDrawer profileData={data} />
+      </Stack>
+    );
   }
-
-  const data: ProfileType = await res.json();
-  return (
-    <Stack direction={"column"} spacing={2}>
-      <AccountDrawer profileData={data} />
-    </Stack>
-  );
+  return <LoginButton />;
 }
 
 function LoginButton() {
