@@ -8,6 +8,7 @@ import {
   ListItemText,
   Paper,
   Stack,
+  Toolbar,
   Typography,
 } from "@mui/material";
 import { ArrowForwardIos } from "@mui/icons-material";
@@ -37,7 +38,8 @@ export default async function Page() {
 
   return (
     <>
-      <Box py={3}>
+      <Toolbar />
+      <Box pb={3}>
         <Typography variant={"h4"} my={1}>
           설정
         </Typography>

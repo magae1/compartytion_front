@@ -5,9 +5,7 @@ import PasswordForm from "@/app/settings/_components/PasswordForm";
 export default function Page() {
   return (
     <Box maxWidth={360} width={"100%"}>
-      <Typography variant={"h4"} my={1}>
-        내 비밀번호 변경
-      </Typography>
+      <Typography variant={"subhead"}>내 비밀번호 변경</Typography>
       <PasswordForm />
     </Box>
   );

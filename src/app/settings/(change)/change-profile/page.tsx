@@ -21,9 +21,7 @@ export default async function Page() {
 
   return (
     <Box maxWidth={640} width={"100%"}>
-      <Typography variant={"h4"} my={1}>
-        내 프로필 정보 변경
-      </Typography>
+      <Typography variant={"subhead"}>내 프로필 정보 변경</Typography>
       <ProfileForm profile={profileData} />
     </Box>
   );

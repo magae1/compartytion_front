@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { Container, Toolbar } from "@mui/material";
+import { Container } from "@mui/material";
 
 import { COOKIE_IS_AUTH } from "@/constants";
 
@@ -26,7 +26,6 @@ export default async function Layout({
         },
       }}
     >
-      <Toolbar />
       {children}
       {modal}
     </Container>
