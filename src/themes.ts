@@ -36,10 +36,8 @@ export const mainTheme = extendTheme({
   typography: {
     fontFamily: gothicA1.style.fontFamily,
     subhead: {
-      marginBottom: "32px",
-      fontSize: "3rem",
+      fontSize: "2rem",
       fontWeight: 400,
-      lineHeight: "1.33",
     },
   },
   components: {
@@ -77,12 +75,20 @@ export const mainTheme = extendTheme({
   colorSchemes: {
     light: {
       palette: {
-        header: "rgba(252,252,252, 0.8)",
+        header: "rgba(252,252,252, 0.6)",
+        background: {
+          default: "#fff",
+          paper: "#f9f9f9",
+        },
       },
     },
     dark: {
       palette: {
-        header: "rgba(3,3,3, 0.8)",
+        header: "rgba(3,3,3, 0.6)",
+        background: {
+          default: "#000",
+          paper: "#0f0f0f",
+        },
       },
     },
   },

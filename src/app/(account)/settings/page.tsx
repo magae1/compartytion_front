@@ -8,7 +8,6 @@ import {
   ListItemText,
   Paper,
   Stack,
-  Toolbar,
   Typography,
 } from "@mui/material";
 import { ArrowForwardIos } from "@mui/icons-material";
@@ -37,21 +36,10 @@ export default async function Page() {
   const accountData: AccountType = await res.json();
 
   return (
-    <>
-      <Toolbar />
-      <Box pb={3}>
-        <Typography variant={"h4"} my={1}>
-          설정
-        </Typography>
-        <Typography>
-          ID: <span>{accountData.id}</span>
-        </Typography>
-      </Box>
-      <Stack spacing={3}>
-        <ProfileSettings profile={accountData.profile} />
-        <AccountSettings account={accountData} />
-      </Stack>
-    </>
+    <Stack spacing={3} mb={2} width={"100%"}>
+      <ProfileSettings profile={accountData.profile} />
+      <AccountSettings account={accountData} />
+    </Stack>
   );
 }
 

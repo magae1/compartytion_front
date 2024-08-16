@@ -13,3 +13,34 @@ export type AccountType = {
   last_password_changed: Date;
   profile: ProfileType;
 };
+
+export type CompetitionSimpleType = {
+  id: string;
+  title: string;
+  created_at: Date;
+  creator: ProfileType;
+  status: string;
+  is_team_game: boolean;
+  introduction?: string;
+};
+
+export interface CompetitionType extends CompetitionSimpleType {
+  managers: ProfileType[];
+  rule?: string;
+  tournament?: string;
+  content?: string;
+}
+
+export type CompetitionCreationStoreType = {
+  activeStep: number;
+  data: {
+    title: string;
+    introduction: string;
+    rule: {
+      content: {};
+    };
+    tournament: {};
+    content: {};
+    is_team_game: boolean;
+  };
+};

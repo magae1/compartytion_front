@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
-import ProfileForm from "@/app/settings/_components/ProfileForm";
+import ProfileForm from "@/app/(account)/settings/_components/ProfileForm";
 import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
 import { ProfileType } from "@/types";
 
@@ -21,7 +21,6 @@ export default async function Page() {
 
   return (
     <Box maxWidth={640} width={"100%"}>
-      <Typography variant={"subhead"}>내 프로필 정보 변경</Typography>
       <ProfileForm profile={profileData} />
     </Box>
   );
