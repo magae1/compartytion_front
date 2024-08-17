@@ -32,6 +32,11 @@ export async function POST(request: NextRequest) {
       secure: true,
       expires: (jwtDecode(data.access).exp ?? 0) * 1000,
     });
+    cookieStore.set(COOKIE_IS_AUTH, "true", {
+      httpOnly: true,
+      secure: true,
+      expires: (jwtDecode(refreshToken ?? "").exp ?? 0) * 1000,
+    });
   }
   cookieStore.delete(COOKIE_REFRESH);
 
