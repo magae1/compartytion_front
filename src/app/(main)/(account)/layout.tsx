@@ -8,9 +8,9 @@ import {
 } from "@mui/material";
 import { Dashboard, Settings } from "@mui/icons-material";
 
-import AccountNavLink from "@/app/(account)/_components/AccountNavLink";
-import ResponsiveNavList from "@/app/(account)/_components/ResponsiveNavList";
-import AccountBreadcrumbs from "@/app/(account)/_components/AccountBreadcrumbs";
+import AccountNavLink from "@/app/(main)/(account)/_components/AccountNavLink";
+import ResponsiveNavList from "@/app/(main)/(account)/_components/ResponsiveNavList";
+import AccountBreadcrumbs from "@/app/(main)/(account)/_components/AccountBreadcrumbs";
 
 const links = [
   {
@@ -24,7 +24,6 @@ const links = [
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <Container disableGutters>
-      <Toolbar />
       <Grid container rowGap={1}>
         <Grid item xs={12} sm={"auto"}>
           <ResponsiveNavList>

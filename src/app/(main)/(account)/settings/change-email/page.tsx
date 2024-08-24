@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 
-import EmailForm from "@/app/(account)/settings/_components/EmailForm";
+import EmailForm from "@/app/(main)/(account)/settings/_components/EmailForm";
 
 export default function Page() {
   return (

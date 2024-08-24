@@ -2,21 +2,39 @@ import React from "react";
 import Link from "next/link";
 import {
   Box,
-  Stack,
   Typography,
   Link as MuiLink,
   Toolbar,
   Container,
+  Button,
 } from "@mui/material";
+import { ArrowForwardIos } from "@mui/icons-material";
 import dayjs from "dayjs";
+
+import HomeAppBar from "@/components/HomeAppBar";
 
 export default function Page() {
   return (
-    <Container maxWidth={false}>
-      <Toolbar />
-      <Stack>
+    <>
+      <HomeAppBar>
+        <Toolbar>
+          <Link href={"/"} style={{ color: "inherit" }}>
+            <Typography sx={{ fontWeight: 600 }}>Compartytion</Typography>
+          </Link>
+          <Button
+            component={Link}
+            href={"/auth"}
+            variant={"contained"}
+            endIcon={<ArrowForwardIos />}
+          >
+            로그인
+          </Button>
+        </Toolbar>
+      </HomeAppBar>
+      <Container component={"main"} maxWidth={false}>
+        <Toolbar />
         <Box height={1666}>123</Box>
-        <Box>
+        <Box mb={6}>
           <Typography
             variant={"body2"}
             color={"text.secondary"}
@@ -28,11 +46,9 @@ export default function Page() {
               컴파티션
             </MuiLink>{" "}
             {dayjs().year()}
-            {"."}
-            {dayjs().month() + 1}
           </Typography>
         </Box>
-      </Stack>
-    </Container>
+      </Container>
+    </>
   );
 }

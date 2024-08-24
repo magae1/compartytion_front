@@ -1,6 +1,9 @@
+import React from "react";
 import { redirect } from "next/navigation";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 
 import EmailForm from "@/app/auth/_components/EmailForm";
+import SocialAuth from "@/app/auth/_components/SocialAuth";
 import { authSchema } from "@/schemas";
 import { BASE_URL, DEFAULT_HEADERS } from "@/constants";
 
@@ -33,5 +36,11 @@ export default function Page() {
     }
   }
 
-  return <EmailForm action={checkEmail} />;
+  return (
+    <Stack spacing={2.5}>
+      <SocialAuth />
+      <Divider sx={{ fontSize: "11px" }}>또는</Divider>
+      <EmailForm action={checkEmail} />
+    </Stack>
+  );
 }

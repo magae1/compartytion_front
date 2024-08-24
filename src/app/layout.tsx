@@ -1,15 +1,11 @@
-import React, { ReactNode, Suspense } from "react";
+import React, { ReactNode } from "react";
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Box, Skeleton, Toolbar, Typography } from "@mui/material";
 import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 
 import { mainTheme } from "@/themes";
 import StoreProvider from "@/app/StoreProvider";
 import AlertToast from "@/components/AlertToast";
-import HomeAppBar from "@/components/HomeAppBar";
-import AppbarTools from "@/components/AppbarTools";
 
 export const metadata: Metadata = {
   title: "Compartytion",
@@ -32,23 +28,7 @@ export default function RootLayout({
         <StoreProvider>
           <AppRouterCacheProvider>
             <CssVarsProvider theme={mainTheme}>
-              <HomeAppBar>
-                <Toolbar>
-                  <Link href={"/"} style={{ color: "inherit" }}>
-                    <Typography sx={{ fontWeight: 600 }}>
-                      Compartytion
-                    </Typography>
-                  </Link>
-                  <Suspense
-                    fallback={
-                      <Skeleton variant={"circular"} width={40} height={40} />
-                    }
-                  >
-                    <AppbarTools />
-                  </Suspense>
-                </Toolbar>
-              </HomeAppBar>
-              <Box component={"main"}>{children}</Box>
+              {children}
               <AlertToast />
             </CssVarsProvider>
           </AppRouterCacheProvider>

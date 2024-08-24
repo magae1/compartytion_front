@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { Box } from "@mui/material";
 
-import ProfileForm from "@/app/(account)/settings/_components/ProfileForm";
+import ProfileForm from "@/app/(main)/(account)/settings/_components/ProfileForm";
 import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
 import { ProfileType } from "@/types";
 

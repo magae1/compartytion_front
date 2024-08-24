@@ -26,4 +26,5 @@ export const DefaultAppBar = styled(AppBar)(({ theme }) => ({
     display: "flex",
     justifyContent: "space-between",
   },
+  transition: `all ${theme.transitions.duration.standard}ms`,
 }));
