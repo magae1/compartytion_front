@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { Alert, Box } from "@mui/material";
 import { jwtDecode } from "jwt-decode";
 
 import LogInForm from "@/app/auth/_components/LogInForm";
@@ -61,11 +60,8 @@ export default function Page(props: Props) {
   }
 
   return (
-    <Box flexGrow={1}>
+    <div className={"grow"}>
       <LogInForm email={email} action={logIn} />
-      {signed_up && (
-        <Alert sx={{ marginTop: 1 }}>회원가입에 성공했습니다!</Alert>
-      )}
-    </Box>
+    </div>
   );
 }

@@ -1,22 +1,20 @@
 "use client";
-import { forwardRef } from "react";
+import { ReactNode } from "react";
 import { useFormStatus } from "react-dom";
-import { Button, ButtonProps } from "@mui/material";
 
-const SubmitButton = forwardRef<HTMLButtonElement, ButtonProps>(
-  (props, ref) => {
-    const { pending } = useFormStatus();
-    return (
-      <Button
-        type={"submit"}
-        variant={"contained"}
-        disableElevation
-        disabled={pending}
-        ref={ref}
-        {...props}
-      />
-    );
-  },
-);
+interface Props {
+  children: ReactNode;
+}
 
-export default SubmitButton;
+export default function SubmitButton(props: Props) {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type={"submit"}
+      disabled={pending}
+      className={"btn btn-info w-full"}
+    >
+      {props.children}
+    </button>
+  );
+}

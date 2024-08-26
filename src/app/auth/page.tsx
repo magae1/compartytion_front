@@ -1,6 +1,5 @@
 import React from "react";
 import { redirect } from "next/navigation";
-import { Box, Divider, Stack, Typography } from "@mui/material";
 
 import EmailForm from "@/app/auth/_components/EmailForm";
 import SocialAuth from "@/app/auth/_components/SocialAuth";
@@ -37,10 +36,10 @@ export default function Page() {
   }
 
   return (
-    <Stack spacing={2.5}>
+    <div className={"flex w-full flex-col gap-3"}>
       <SocialAuth />
-      <Divider sx={{ fontSize: "11px" }}>또는</Divider>
+      <div className={"divider text-xs"}>또는</div>
       <EmailForm action={checkEmail} />
-    </Stack>
+    </div>
   );
 }

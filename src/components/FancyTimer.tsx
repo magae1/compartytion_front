@@ -1,6 +1,11 @@
 "use client";
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import { Typography, TypographyProps } from "@mui/material";
+import {
+  CSSProperties,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 
@@ -12,9 +17,13 @@ export interface FanyTimerType {
   reset: (n: number) => void;
 }
 
-const FancyTimer = forwardRef<FanyTimerType, TypographyProps>((props, ref) => {
+interface Props {
+  textsize: string;
+}
+
+const FancyTimer = forwardRef<FanyTimerType, Props>((props, ref) => {
   const [seconds, isTimeOver, reset] = useCountDown(0, 1000);
-  const [color, setColor] = useState<string>("text.primary");
+  const [color, setColor] = useState<string>("text-primary");
 
   useImperativeHandle(ref, () => ({
     reset,
@@ -24,16 +33,30 @@ const FancyTimer = forwardRef<FanyTimerType, TypographyProps>((props, ref) => {
     if (seconds > 120) {
       setColor("text.primary");
     } else if (seconds > 60) {
-      setColor("warning.main");
+      setColor("text-warning");
     } else {
-      setColor("error.main");
+      setColor("text-error");
     }
   }, [seconds]);
 
   return (
-    <Typography sx={{ color: color }} {...props}>
-      {dayjs.duration(seconds, "s").format("mm:ss")}
-    </Typography>
+    <span className={`countdown ${props.textsize} ${color}`}>
+      <span
+        style={
+          {
+            "--value": dayjs.duration(seconds, "s").format("mm"),
+          } as CSSProperties
+        }
+      ></span>
+      :
+      <span
+        style={
+          {
+            "--value": dayjs.duration(seconds, "s").format("ss"),
+          } as CSSProperties
+        }
+      ></span>
+    </span>
   );
 });
 

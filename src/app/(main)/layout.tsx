@@ -1,11 +1,9 @@
-import React, { ReactNode, Suspense } from "react";
+import React, { ReactNode } from "react";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { Skeleton, Toolbar, Typography } from "@mui/material";
 
-import HomeAppBar from "@/components/HomeAppBar";
-import AppbarTools from "@/components/AppbarTools";
 import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
+import AccountMenu from "@/components/AccountMenu";
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const accessToken = cookies().get(COOKIE_ACCESS)?.value;
@@ -22,22 +20,19 @@ export default async function Layout({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <HomeAppBar>
-        <Toolbar>
-          <Link href={"/"} style={{ color: "inherit" }}>
-            <Typography sx={{ fontWeight: 600 }}>Compartytion</Typography>
-          </Link>
-          <Suspense
-            fallback={<Skeleton variant={"circular"} width={40} height={40} />}
-          >
-            <AppbarTools profileData={data} />
-          </Suspense>
-        </Toolbar>
-      </HomeAppBar>
-      <main>
-        <Toolbar />
-        {children}
-      </main>
+      <div className={"sticky-header"}>
+        <nav className={"navbar"}>
+          <div className={"flex-1"}>
+            <Link href={"/"} className={"btn btn-ghost text-xl"}>
+              Compartytion
+            </Link>
+          </div>
+          <div className={"flex-none flex gap-x-2 sm:pr-1 md:pr-3"}>
+            {data && <AccountMenu profileData={data} />}
+          </div>
+        </nav>
+      </div>
+      <main>{children}</main>
     </>
   );
 }

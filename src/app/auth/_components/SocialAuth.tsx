@@ -1,11 +1,9 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
-
 export default function SocialAuth() {
   //TODO: 소셜 로그인 추가(백 구현 이후)
   return (
-    <Stack spacing={2}>
-      <Button variant={"outlined"}>구글</Button>
-      <Button variant={"outlined"}>네이버</Button>
-    </Stack>
+    <div className={"flex flex-col gap-3"}>
+      <button className={"btn btn-sm btn-outline"}>구글</button>
+      <button className={"btn btn-sm btn-outline"}>네이버</button>
+    </div>
   );
 }

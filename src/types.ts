@@ -1,3 +1,7 @@
+export interface StepProps {
+  userId: number;
+}
+
 export type ProfileType = {
   account: string;
   avatar: string | null;

@@ -1,11 +1,9 @@
 import React, { ReactNode } from "react";
 import type { Metadata } from "next";
-import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
+import { ToastContainer } from "react-toastify";
 
-import { mainTheme } from "@/themes";
-import StoreProvider from "@/app/StoreProvider";
-import AlertToast from "@/components/AlertToast";
+import "./globals.css";
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
   title: "Compartytion",
@@ -19,20 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body
-        style={{
-          margin: 0,
-          backgroundColor: "var(--mui-palette-background-default)",
-        }}
-      >
-        <StoreProvider>
-          <AppRouterCacheProvider>
-            <CssVarsProvider theme={mainTheme}>
-              {children}
-              <AlertToast />
-            </CssVarsProvider>
-          </AppRouterCacheProvider>
-        </StoreProvider>
+      <body className={"min-h-screen"}>
+        {children}
+        <ToastContainer position={"bottom-left"} />
       </body>
     </html>
   );

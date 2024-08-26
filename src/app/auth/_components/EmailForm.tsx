@@ -1,9 +1,8 @@
 "use client";
 import { useFormState } from "react-dom";
-import { FormControl, FormHelperText, Stack } from "@mui/material";
+import { IoMailOutline } from "react-icons/io5";
 
 import SubmitButton from "@/components/SubmitButton";
-import FormInput from "@/components/FormInput";
 
 const initialState: { email?: string[] } = {};
 
@@ -11,20 +10,24 @@ export default function EmailForm({ action }: { action: any }) {
   const [state, formAction] = useFormState(action, initialState);
 
   return (
-    <Stack spacing={2} component={"form"} action={formAction}>
-      <FormControl error={!!state.email}>
-        <FormInput
-          label_str={"이메일"}
+    <form action={formAction}>
+      <label className={"form-input-label"}>
+        <IoMailOutline />
+        <input
           name={"email"}
+          className={"grow"}
           placeholder={"이메일 주소를 입력해주세요."}
           autoComplete={"username"}
-        >
-          {state?.email?.map((v: string) => (
-            <FormHelperText key={v}>{v}</FormHelperText>
-          ))}
-        </FormInput>
-      </FormControl>
+        />
+      </label>
+      <div className={"label"}>
+        {state?.email?.map((v: string) => (
+          <p key={v} className={"label-text-alt text-error"}>
+            {v}
+          </p>
+        ))}
+      </div>
       <SubmitButton>이메일로 계속</SubmitButton>
-    </Stack>
+    </form>
   );
 }

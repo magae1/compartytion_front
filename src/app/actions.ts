@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { authSchema, changePasswordSchema, otpSchema } from "@/schemas";
 import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
+import { CompetitionCreationStoreType } from "@/types";
 
 export async function sendOTP(prevState: any, formData: FormData) {
   const validatedFormData = authSchema.safeParse({
@@ -123,4 +124,19 @@ export async function changeEmail(prevStat: any, formData: FormData) {
 
   revalidatePath("/settings", "page");
   return { ...prevStat, success: true, ...data };
+}
+
+export async function createCompetition(data: CompetitionCreationStoreType) {
+  const accessToken = cookies().get(COOKIE_ACCESS)?.value;
+  const res = await fetch(BASE_URL + "/competitions/", {
+    method: "POST",
+    headers: { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    return { success: false, id: "" };
+  }
+  const res_data = await res.json();
+  return { success: true, id: res_data.id as string };
 }

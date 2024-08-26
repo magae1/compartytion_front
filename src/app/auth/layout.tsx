@@ -1,33 +1,25 @@
 import React, { ReactNode } from "react";
 import Link from "next/link";
-import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>
-      <AppBar sx={{ bgcolor: "background.default", borderWidth: "1px 0px" }}>
-        <Container>
-          <Toolbar disableGutters>
-            <Link
-              href={"/"}
-              style={{ color: "inherit", textDecoration: "none" }}
-            >
-              <Typography sx={{ fontWeight: 600 }}>Compartytion</Typography>
+      <div className={"sticky-header"}>
+        <nav className={"navbar"}>
+          <div className={"flex-1"}>
+            <Link href={"/"} className={"btn btn-ghost text-xl"}>
+              Compartytion
             </Link>
-          </Toolbar>
-        </Container>
-      </AppBar>
-      <Container component={"main"} maxWidth={"md"}>
-        <Toolbar />
-        <Box
-          pt={{ xs: "12vh", sm: "16vh", md: "20vh" }}
-          sx={{ display: "flex", justifyContent: "center" }}
+          </div>
+        </nav>
+      </div>
+      <main className={"h-full"}>
+        <div
+          className={"container pt-24 sm:pt-36 md:pt-48 flex justify-center"}
         >
-          <Box width={"100%"} maxWidth={360}>
-            {children}
-          </Box>
-        </Box>
-      </Container>
+          <div className={"w-full max-w-80"}>{children}</div>
+        </div>
+      </main>
     </>
   );
 }

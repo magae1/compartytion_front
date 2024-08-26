@@ -1,9 +1,13 @@
 "use client";
 import { useFormState } from "react-dom";
-import { FormControl, FormHelperText, Stack } from "@mui/material";
+import {
+  IoKeyOutline,
+  IoKeySharp,
+  IoMailOutline,
+  IoPersonOutline,
+} from "react-icons/io5";
 
 import SubmitButton from "@/components/SubmitButton";
-import FormInput from "@/components/FormInput";
 
 const initialState: {
   email?: string[];
@@ -23,63 +27,85 @@ export default function SignUpForm({ email, action }: Props) {
   const [state, formAction] = useFormState(action, initialState);
 
   return (
-    <Stack spacing={2} component={"form"} action={formAction}>
-      <FormControl error={!!state.email}>
-        <FormInput
-          label_str={"이메일"}
-          name={"email"}
-          placeholder={"이메일 주소를 입력해주세요."}
-          autoComplete={"username"}
-          defaultValue={email}
-        >
+    <form action={formAction}>
+      <div>
+        <label className={"form-input-label"}>
+          <IoMailOutline />
+          <input
+            name={"email"}
+            defaultValue={email}
+            className={"grow"}
+            placeholder={"이메일 주소를 입력해주세요."}
+            autoComplete={"username"}
+          />
+        </label>
+        <div className={"label"}>
           {state?.email?.map((v: string) => (
-            <FormHelperText key={v}>{v}</FormHelperText>
+            <p key={v} className={"label-text-alt text-error"}>
+              {v}
+            </p>
           ))}
-        </FormInput>
-      </FormControl>
-      <FormControl
-        error={
-          !!state.username && initialState.username[0] != state.username[0]
-        }
-      >
-        <FormInput
-          label_str={"사용자명"}
-          name={"username"}
-          placeholder={"사용자명을 입력해주세요."}
-          autoComplete={"off"}
-        >
+        </div>
+      </div>
+      <div>
+        <label className={"form-input-label"}>
+          <IoPersonOutline />
+          <input
+            name={"username"}
+            placeholder={"사용자명을 입력해주세요."}
+            autoComplete={"off"}
+          />
+        </label>
+        <div className={"label"}>
           {state?.username?.map((v: string) => (
-            <FormHelperText key={v}>{v}</FormHelperText>
+            <p
+              key={v}
+              className={`label-text-alt ${!state.username || initialState.username[0] != state.username[0] ? "text-error" : ""}`}
+            >
+              {v}
+            </p>
           ))}
-        </FormInput>
-      </FormControl>
-      <FormControl error={!!state.password}>
-        <FormInput
-          label_str={"비밀번호"}
-          type={"password"}
-          name={"password"}
-          placeholder={"비밀번호를 입력해주세요."}
-          autoComplete={"new-password"}
-        >
+        </div>
+      </div>
+      <div>
+        <label className={"form-input-label"}>
+          <IoKeyOutline />
+          <input
+            type={"password"}
+            name={"password"}
+            className={"grow"}
+            placeholder={"비밀번호를 입력해주세요."}
+            autoComplete={"new-password"}
+          />
+        </label>
+        <div className={"label flex flex-col items-start"}>
           {state?.password?.map((v: string) => (
-            <FormHelperText key={v}>{v}</FormHelperText>
+            <p key={v} className={"label-text-alt text-error"}>
+              {v}
+            </p>
           ))}
-        </FormInput>
-      </FormControl>
-      <FormControl error={!!state.confirm}>
-        <FormInput
-          label_str={"비밀번호(확인)"}
-          type={"password"}
-          name={"confirm"}
-          placeholder={"비밀번호(확인)를 입력해주세요."}
-          autoComplete={"new-password"}
-        >
+        </div>
+      </div>
+      <div>
+        <label className={"form-input-label"}>
+          <IoKeySharp />
+          <input
+            type={"password"}
+            name={"confirm"}
+            className={"grow"}
+            placeholder={"비밀번호(확인)를 입력해주세요."}
+            autoComplete={"new-password"}
+          />
+        </label>
+        <div className={"label flex flex-col items-start"}>
           {state?.confirm?.map((v: string) => (
-            <FormHelperText key={v}>{v}</FormHelperText>
+            <p key={v} className={"label-text-alt text-error"}>
+              {v}
+            </p>
           ))}
-        </FormInput>
-      </FormControl>
+        </div>
+      </div>
       <SubmitButton>새 계정 만들기</SubmitButton>
-    </Stack>
+    </form>
   );
 }

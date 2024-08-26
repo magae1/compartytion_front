@@ -1,13 +1,16 @@
 import { cookies } from "next/headers";
-import { Box } from "@mui/material";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+import relativeTime from "dayjs/plugin/relativeTime";
 
-import ProfileForm from "@/app/(main)/(account)/settings/_components/ProfileForm";
+dayjs.extend(relativeTime);
+
 import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
-import { ProfileType } from "@/types";
+import { AccountType, ProfileType } from "@/types";
 
 export default async function Page() {
   const accessToken = cookies().get(COOKIE_ACCESS);
-  const res = await fetch(BASE_URL + "/profiles/me/", {
+  const res = await fetch(BASE_URL + "/accounts/me/", {
     headers: {
       ...DEFAULT_HEADERS,
       Authorization: `Bearer ${accessToken?.value}`,
@@ -17,11 +20,7 @@ export default async function Page() {
   if (!res.ok) {
     throw new Error("데이터를 불러올 수 없습니다.");
   }
-  const profileData: ProfileType = await res.json();
+  const accountData: AccountType = await res.json();
 
-  return (
-    <Box maxWidth={640} width={"100%"}>
-      <ProfileForm profile={profileData} />
-    </Box>
-  );
+  return <div className={"grid gap-2.5"}></div>;
 }

@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Box, CircularProgress } from "@mui/material";
 
 export default function Page() {
   const router = useRouter();
@@ -15,6 +14,7 @@ export default function Page() {
       }).then(() => {
         const path = searchParams.get("path");
         if (path) {
+          console.log(decodeURI(path));
           router.push(decodeURI(path));
         }
         router.push("/");
@@ -25,16 +25,8 @@ export default function Page() {
   }, [mounted]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        width: "100vw",
-      }}
-    >
-      <CircularProgress size={64} />
-    </Box>
+    <div className={"flex w-screen h-screen justify-center items-center"}>
+      <span className={"loading loading-dots loading-lg"}></span>
+    </div>
   );
 }
