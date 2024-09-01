@@ -27,13 +27,15 @@ export async function POST(request: NextRequest) {
     cookieStore.delete(COOKIE_IS_AUTH);
   } else {
     const data = await res.json();
+    // TODO: httpOnly -> true, secure -> true
     cookieStore.set(COOKIE_ACCESS, data.access, {
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
       expires: (jwtDecode(data.access).exp ?? 0) * 1000,
     });
+    // TODO: httpOnly -> true, secure -> true
     cookieStore.set(COOKIE_IS_AUTH, "true", {
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
       expires: (jwtDecode(refreshToken ?? "").exp ?? 0) * 1000,
     });

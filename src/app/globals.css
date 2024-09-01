@@ -10,4 +10,8 @@
     .form-input-label {
         @apply input input-bordered flex items-center gap-2;
     }
+
+    .setting-child-wrapper {
+        @apply shadow dark:border dark:border-slate-500/30 p-6 rounded-xl ;
+    }
 }

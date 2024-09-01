@@ -22,7 +22,7 @@ export default function Page(props: Props) {
   const signed_up = searchParams?.signed_up;
 
   async function logIn(prevStat: any, formData: FormData) {
-    "use server";
+    ("use server");
     const validatedFormData = logInSchema.safeParse({
       email: formData.get("email"),
       password: formData.get("password"),
@@ -43,15 +43,17 @@ export default function Page(props: Props) {
       return { password: ["비밀번호를 확인해주세요."] };
     }
 
+    // TODO: httpOnly -> true, secure -> true
     cookies().set(COOKIE_ACCESS, data.access, {
-      httpOnly: true,
-      secure: true,
+      httpOnly: false,
+      secure: false,
       expires: (jwtDecode(data.access).exp ?? 0) * 1000,
     });
     const refreshExp = (jwtDecode(data.refresh).exp ?? 0) * 1000;
+    // TODO: httpOnly -> true, secure -> true
     cookies().set(COOKIE_REFRESH, data.refresh, {
-      httpOnly: true,
-      secure: true,
+      httpOnly: false,
+      secure: false,
       path: "/api",
       expires: refreshExp,
     });

@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
 import AccountMenu from "@/components/AccountMenu";
@@ -8,15 +9,18 @@ import AccountMenu from "@/components/AccountMenu";
 export default async function Layout({ children }: { children: ReactNode }) {
   const accessToken = cookies().get(COOKIE_ACCESS)?.value;
 
-  const data = await fetch(BASE_URL + "/profiles/me/", {
+  const res = await fetch(BASE_URL + "/profiles/me/", {
     headers: {
       ...DEFAULT_HEADERS,
       Authorization: `Bearer ${accessToken}`,
     },
     next: { tags: ["profile"] },
-  })
-    .then((res) => res.json())
-    .catch(() => undefined);
+  });
+
+  if (!res.ok) {
+    redirect("/auth");
+  }
+  const data = await res.json();
 
   return (
     <>
@@ -28,7 +32,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
             </Link>
           </div>
           <div className={"flex-none flex gap-x-2 sm:pr-1 md:pr-3"}>
-            {data && <AccountMenu profileData={data} />}
+            <AccountMenu profileData={data} />
           </div>
         </nav>
       </div>

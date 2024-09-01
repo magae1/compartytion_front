@@ -20,6 +20,7 @@ export default function RootLayout({
       <body className={"min-h-screen"}>
         {children}
         <ToastContainer position={"bottom-left"} />
+        <div id={"modal-root"} />
       </body>
     </html>
   );

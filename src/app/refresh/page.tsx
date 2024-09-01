@@ -11,14 +11,19 @@ export default function Page() {
     if (mounted) {
       fetch("/api/refresh/", {
         method: "POST",
-      }).then(() => {
-        const path = searchParams.get("path");
-        if (path) {
-          console.log(decodeURI(path));
-          router.push(decodeURI(path));
-        }
-        router.push("/");
-      });
+      })
+        .then(() => {
+          const path = searchParams.get("path");
+          if (path) {
+            const pathStr = decodeURI(path);
+            router.push(pathStr);
+          } else {
+            router.push("/");
+          }
+        })
+        .catch(() => {
+          router.push("/auth");
+        });
     } else {
       setMounted(true);
     }

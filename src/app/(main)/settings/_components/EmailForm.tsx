@@ -5,6 +5,7 @@ import { useFormState } from "react-dom";
 import FancyTimer, { FanyTimerType } from "@/components/FancyTimer";
 import { changeEmail, sendOTP } from "@/app/actions";
 import SubmitButton from "@/components/SubmitButton";
+import { toast } from "react-toastify";
 
 const initialState: { email?: string[]; otp?: string[] } = {};
 const initialSentState: { email?: string[]; remaining_time?: number } = {};
@@ -26,17 +27,21 @@ export default function EmailForm() {
 
   useEffect(() => {
     if (state.success) {
-    } else if (state.detail) {
+      toast.success(state.detail ?? "");
     }
   }, [state]);
 
   return (
     <form action={formAction}>
-      <div>
-        <label className={"form-input-label"}>
-          이메일
-          <input name={"email"} className={"grow"} autoComplete={"email"} />
-        </label>
+      <label className={"form-control"}>
+        <div className={"label"}>
+          <span className={"label-text"}>새 이메일</span>
+        </div>
+        <input
+          name={"email"}
+          className={"input input-bordered"}
+          autoComplete={"off"}
+        />
         <div className={"label flex flex-col items-start"}>
           {state?.email?.map((v: string) => (
             <p key={v} className={"label-text-alt text-error"}>
@@ -49,25 +54,27 @@ export default function EmailForm() {
             </p>
           ))}
         </div>
-      </div>
-      <div className={"flex"}>
-        <label className={"form-input-label flex-1"}>
-          OTP
+      </label>
+      <label className={"form-control"}>
+        <div className={"label"}>
+          <span className={"label-text"}>OTP</span>
+        </div>
+        <div className={"flex"}>
           <input
             name={"otp"}
-            className={"grow"}
+            className={"flex-1 input input-bordered min-w-0"}
             autoComplete={"one-time-code"}
           />
-        </label>
-        <button
-          type={"submit"}
-          formAction={sendAction}
-          ref={otpButtonRef}
-          className={"btn flex-none ml-2"}
-        >
-          전송
-        </button>
-      </div>
+          <button
+            type={"submit"}
+            formAction={sendAction}
+            ref={otpButtonRef}
+            className={"btn flex-none ml-2"}
+          >
+            전송
+          </button>
+        </div>
+      </label>
       <div className={"flex"}>
         <div className={"label flex-1"}>
           {state?.otp?.map((v: string) => (

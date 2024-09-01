@@ -9,15 +9,9 @@ export const authSchema = z.object({
 });
 
 export const logInSchema = authSchema.extend({
-  password: z
-    .string({
-      required_error: "비밀번호는 반드시 입력해야 합니다.",
-    })
-    .min(8, { message: "최소 8자 이상의 비밀번호가 필요합니다." })
-    .regex(/(?=.*[0-9])/, { message: "하나 이상의 숫자가 필요합니다." })
-    .regex(/(?=.*[a-zA-Z])/, {
-      message: "하나 이상의 영문자가 필요합니다.",
-    }),
+  password: z.string({
+    required_error: "비밀번호는 반드시 입력해야 합니다.",
+  }),
 });
 
 export const otpSchema = authSchema.extend({
@@ -26,7 +20,7 @@ export const otpSchema = authSchema.extend({
     .regex(/^\d{6}$/gm, "잘못된 OTP 입력입니다."),
 });
 
-export const signUpSchema = logInSchema
+export const signUpSchema = authSchema
   .extend({
     username: z
       .string({ required_error: "사용자명은 반드시 입력해야 합니다." })
@@ -34,6 +28,15 @@ export const signUpSchema = logInSchema
     confirm: z.string({
       required_error: "비밀번호 확인은 반드시 입력해야 합니다.",
     }),
+    password: z
+      .string({
+        required_error: "비밀번호는 반드시 입력해야 합니다.",
+      })
+      .min(8, { message: "최소 8자 이상의 비밀번호가 필요합니다." })
+      .regex(/(?=.*[0-9])/, { message: "하나 이상의 숫자가 필요합니다." })
+      .regex(/(?=.*[a-zA-Z])/, {
+        message: "하나 이상의 영문자가 필요합니다.",
+      }),
   })
   .refine((data) => data.password === data.confirm, {
     message: "비밀번호가 일치하지 않습니다.",

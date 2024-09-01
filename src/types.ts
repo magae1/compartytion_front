@@ -1,9 +1,5 @@
-export interface StepProps {
-  userId: number;
-}
-
 export type ProfileType = {
-  account: string;
+  username: string;
   avatar: string | null;
   introduction: string | null;
   displayed_name: string | null;

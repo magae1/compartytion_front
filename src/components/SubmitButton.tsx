@@ -14,6 +14,7 @@ export default function SubmitButton(props: Props) {
       disabled={pending}
       className={"btn btn-info w-full"}
     >
+      {pending && <span className={"loading loading-spinner"}></span>}
       {props.children}
     </button>
   );

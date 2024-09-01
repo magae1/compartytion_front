@@ -29,30 +29,6 @@ export async function sendOTP(prevState: any, formData: FormData) {
   return { remaining_time: data.remaining_time };
 }
 
-export async function changeProfile(prevStat: any, formData: FormData) {
-  const file = formData.get("avatar") as File | null;
-  if (!file || !file.name || file.size == 0) {
-    formData.delete("avatar");
-  }
-
-  const accessToken = cookies().get(COOKIE_ACCESS)?.value;
-  const res = await fetch(BASE_URL + "/profiles/me/", {
-    method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: formData,
-  });
-
-  const data = await res.json();
-  if (!res.ok) {
-    return { ...prevStat, ...data };
-  }
-
-  revalidatePath("/", "layout");
-  return { ...prevStat, success: true, ...data };
-}
-
 export async function changePassword(prevStat: any, formData: FormData) {
   const validatedFormData = changePasswordSchema.safeParse({
     password: formData.get("password"),
@@ -124,6 +100,30 @@ export async function changeEmail(prevStat: any, formData: FormData) {
 
   revalidatePath("/settings", "page");
   return { ...prevStat, success: true, ...data };
+}
+
+export async function changeProfile(prevStat: any, formData: FormData) {
+  const file = formData.get("avatar") as File | null;
+  if (!file || !file.name || file.size == 0) {
+    formData.delete("avatar");
+  }
+
+  const accessToken = cookies().get(COOKIE_ACCESS)?.value;
+  const res = await fetch(BASE_URL + "/accounts/change_profile/", {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: formData,
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+    return { success: false, ...data };
+  }
+
+  revalidatePath("/", "layout");
+  return { success: true, ...data };
 }
 
 export async function createCompetition(data: CompetitionCreationStoreType) {
