@@ -71,3 +71,14 @@ export const changePasswordSchema = z
     message: "새 비밀번호가 일치하지 않습니다.",
     path: ["new_password_confirmation"],
   });
+
+export const createCompetitionSchema = z.object({
+  title: z.string({
+    invalid_type_error: "대회명은 받드시 입력해야 합니다.",
+  }),
+  introduction: z.string().nullish(),
+  is_team_game: z.boolean({
+    invalid_type_error: "팀 게임 여부를 선택해주세요.",
+  }),
+  managers: z.string().array(),
+});

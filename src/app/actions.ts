@@ -1,10 +1,15 @@
 "use server";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
-import { authSchema, changePasswordSchema, otpSchema } from "@/schemas";
+import {
+  authSchema,
+  changePasswordSchema,
+  otpSchema,
+  createCompetitionSchema,
+} from "@/schemas";
 import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
-import { CompetitionCreationStoreType } from "@/types";
 
 export async function sendOTP(prevState: any, formData: FormData) {
   const validatedFormData = authSchema.safeParse({
@@ -126,17 +131,50 @@ export async function changeProfile(prevStat: any, formData: FormData) {
   return { success: true, ...data };
 }
 
-export async function createCompetition(data: CompetitionCreationStoreType) {
+export async function createCompetition(prevStat: any, formData: FormData) {
+  const title = formData.get("title") as string;
+  const managers = formData.get("managers") as string;
+  const introduction = formData.get("introduction") as string;
+  const validatedFormData = createCompetitionSchema.safeParse({
+    title: title ? title : null,
+    introduction: introduction ? introduction : null,
+    is_team_game: formData.get("is_team_game") === "on",
+    managers: managers ? [...managers.split(",")] : [],
+  });
+
+  if (!validatedFormData.success) {
+    return validatedFormData.error.flatten().fieldErrors;
+  }
+
   const accessToken = cookies().get(COOKIE_ACCESS)?.value;
   const res = await fetch(BASE_URL + "/competitions/", {
     method: "POST",
     headers: { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` },
-    body: JSON.stringify(data),
+    body: JSON.stringify(validatedFormData.data),
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+    return { ...prevStat, success: false, ...data };
+  }
+
+  revalidatePath("/dashboard");
+  redirect("/dashboard");
+}
+
+export async function getProfile(username: string | null) {
+  const accessToken = cookies().get(COOKIE_ACCESS)?.value;
+  if (!accessToken || !username || username === "") {
+    return { success: false };
+  }
+
+  const res = await fetch(BASE_URL + `/profiles/${username}/`, {
+    headers: { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` },
   });
 
   if (!res.ok) {
-    return { success: false, id: "" };
+    return { success: false };
   }
-  const res_data = await res.json();
-  return { success: true, id: res_data.id as string };
+  const data = await res.json();
+  return await { success: true, ...data };
 }
