@@ -22,7 +22,7 @@ export default function Page(props: Props) {
   const signed_up = searchParams?.signed_up;
 
   async function logIn(prevStat: any, formData: FormData) {
-    ("use server");
+    "use server";
     const validatedFormData = logInSchema.safeParse({
       email: formData.get("email"),
       password: formData.get("password"),

@@ -1,12 +1,19 @@
 "use client";
-import { ChangeEvent, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import { useFormState } from "react-dom";
 import Image from "next/image";
 import { MdAddAPhoto, MdInfo } from "react-icons/md";
+import { FaLock, FaLockOpen } from "react-icons/fa6";
 import { toast } from "react-toastify";
 
 import { ProfileType } from "@/types";
 import { changeProfile } from "@/app/actions";
-import { useFormState } from "react-dom";
 
 const tooltip = {
   display: "대회 참가자, 관리자 모두에게 보여지는 이름입니다.",
@@ -29,6 +36,7 @@ interface Props {
 
 export default function ProfileForm(props: Props) {
   const { profile } = props;
+  const [editable, setEditable] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [state, formAction] = useFormState(changeProfile, initialState);
 
@@ -40,6 +48,11 @@ export default function ProfileForm(props: Props) {
     }
     setImageFile(e.target.files[0]);
   };
+
+  const toggleEditable = useCallback((e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    setEditable((prev) => !prev);
+  }, []);
 
   useEffect(() => {
     if (state.success) {
@@ -71,13 +84,16 @@ export default function ProfileForm(props: Props) {
             )}
           </div>
         </div>
-        <label className={"btn btn-sm btn-outline"}>
+        <label
+          className={`btn btn-sm ${editable ? "btn-outline" : "btn-disabled"}`}
+        >
           <input
             type={"file"}
             name={"avatar"}
             hidden
             accept={"image/*"}
             onChange={handleImageChange}
+            disabled={!editable}
           />
           <MdAddAPhoto
             size={21}
@@ -103,6 +119,7 @@ export default function ProfileForm(props: Props) {
             defaultValue={profile.username}
             className={"input input-bordered"}
             autoComplete={"off"}
+            disabled={!editable}
           />
           <div className={"label"}>
             {state.username?.map((v: string) => (
@@ -121,6 +138,7 @@ export default function ProfileForm(props: Props) {
             className={"grow textarea textarea-bordered leading-normal"}
             defaultValue={profile.introduction ?? ""}
             rows={4}
+            disabled={!editable}
           />
           <div className={"label"}>
             {state.instroduction?.map((v: string) => (
@@ -145,6 +163,7 @@ export default function ProfileForm(props: Props) {
             defaultValue={profile.displayed_name ?? ""}
             className={"input input-bordered"}
             autoComplete={"off"}
+            disabled={!editable}
           />
           <div className={"label"}>
             {state.displayed_name?.map((v: string) => (
@@ -169,6 +188,7 @@ export default function ProfileForm(props: Props) {
             defaultValue={profile.hidden_name ?? ""}
             className={"input input-bordered"}
             autoComplete={"off"}
+            disabled={!editable}
           />
           <div className={"label"}>
             {state.hidden_name?.map((v: string) => (
@@ -178,8 +198,18 @@ export default function ProfileForm(props: Props) {
             ))}
           </div>
         </label>
-        <div className={"flex justify-end"}>
-          <button type={"submit"} className={"btn hover:btn-success btn-sm"}>
+        <div className={"flex justify-end space-x-3"}>
+          <div
+            onClick={toggleEditable}
+            className={"btn btn-square btn-sm btn-accent"}
+          >
+            {editable ? <FaLockOpen /> : <FaLock />}
+          </div>
+          <button
+            type={"submit"}
+            disabled={!editable}
+            className={"btn hover:btn-success btn-sm"}
+          >
             변경
           </button>
         </div>
