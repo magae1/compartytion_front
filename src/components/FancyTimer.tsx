@@ -60,4 +60,6 @@ const FancyTimer = forwardRef<FanyTimerType, Props>((props, ref) => {
   );
 });
 
+FancyTimer.displayName = "FancyTimer";
+
 export default FancyTimer;
