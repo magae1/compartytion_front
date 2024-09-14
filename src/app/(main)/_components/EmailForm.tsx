@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
+import { toast } from "react-toastify";
 
 import FancyTimer, { FanyTimerType } from "@/components/FancyTimer";
 import { changeEmail, sendOTP } from "@/app/actions";
 import SubmitButton from "@/components/SubmitButton";
-import { toast } from "react-toastify";
 
 const initialState: { email?: string[]; otp?: string[] } = {};
 const initialSentState: { email?: string[]; remaining_time?: number } = {};
