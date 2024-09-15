@@ -84,8 +84,8 @@ export default function Page() {
             ))}
           </div>
         </label>
-        <div className={"form-control"}>
-          <div className={"label peer"}>
+        <div className={"form-control group"}>
+          <div className={"label"}>
             <span className={"label-text"}>팀 게임 여부</span>
             <label className={"cursor-pointer flex items-center space-x-2"}>
               <span>개인</span>
@@ -97,15 +97,11 @@ export default function Page() {
               <span>팀</span>
             </label>
           </div>
-          <div className={"label peer-has-[:checked]:hidden"}>
-            <p />
-            <p className={"label-text-alt"}>
+          <div className={"label justify-end"}>
+            <p className={"label-text-alt group-has-[:checked]:hidden"}>
               대회 참가자들이 <strong>개인(1명)</strong>으로 참가합니다.
             </p>
-          </div>
-          <div className={"label hidden peer-has-[:checked]:flex"}>
-            <p />
-            <p className={"label-text-alt"}>
+            <p className={"label-text-alt hidden group-has-[:checked]:block"}>
               대회 참가자들이 <strong>팀(1명 이상)</strong>으로 참가합니다.
             </p>
           </div>
@@ -123,19 +119,27 @@ export default function Page() {
           <span className={"label-text"}>대회 관리자 초대</span>
         </div>
         <ProfileSearchForm addManager={addManager} />
-        <div className={"flex flex-col gap-y-1"}>
-          {managers.map((v) => (
-            <ProfileCard
-              key={v.username}
-              profile={v}
-              handleDeletion={deleteManager}
-            />
-          ))}
+        <div className={"flex flex-col gap-y-1 min-h-12"}>
+          {managers.length > 0 ? (
+            managers.map((v) => (
+              <ProfileCard
+                key={v.username}
+                profile={v}
+                handleDeletion={deleteManager}
+              />
+            ))
+          ) : (
+            <p className={"text-center text-xs mt-4"}>
+              대회 관리자를 초대해보세요.
+            </p>
+          )}
         </div>
         <div className={"label justify-end"}>
-          <p className={"label-text-alt"}>
-            {managers.length}명에게 초대 메시지를 보냅니다.
-          </p>
+          {managers.length > 0 && (
+            <p className={"label-text-alt"}>
+              {managers.length}명에게 초대 메시지를 보냅니다.
+            </p>
+          )}
         </div>
       </div>
       <button className={"btn w-full"} onClick={clickSubmitButton}>

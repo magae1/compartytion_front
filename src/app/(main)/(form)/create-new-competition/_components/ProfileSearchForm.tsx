@@ -1,4 +1,4 @@
-import { useState, KeyboardEvent } from "react";
+import { useState, KeyboardEvent, ChangeEvent } from "react";
 import { MdSearch, MdAdd } from "react-icons/md";
 
 import { ProfileType } from "@/types";
@@ -16,7 +16,6 @@ export default function ProfileSearchForm(props: Props) {
 
   const searchProfile = async () => {
     setLoading(true);
-    setIsError(false);
     const profile = await getProfile(searchInput).then((p) => {
       setLoading(false);
       return p;
@@ -34,17 +33,22 @@ export default function ProfileSearchForm(props: Props) {
     }
   };
 
+  const changeSearchInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsError(false);
+    setSearchInput(e.target.value);
+  };
+
   return (
     <div className={"shadow-inner rounded my-1"}>
-      <label className={"input input-bordered flex items-center gap-2"}>
+      <label className={"input input-bordered flex items-center gap-2 pr-2"}>
         {loading ? (
           <span className={"loading loading-spinner"}></span>
         ) : (
           <MdSearch size={24} />
         )}
         <input
-          className={"w-full my-1"}
-          onChange={(e) => setSearchInput(e.target.value)}
+          className={"w-full"}
+          onChange={changeSearchInput}
           onKeyDown={handleKeyDown}
         />
         <button

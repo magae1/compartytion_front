@@ -12,7 +12,7 @@ export default function ProfileCircle(props: Props) {
   const { profile, size = 10 } = props;
 
   return (
-    <div className={`avatar ${profile.avatar ? "" : "placeholder"}`}>
+    <div className={`avatar${profile.avatar ? "" : " placeholder"}`}>
       <div
         className={`w-${size} h-${size} bg-neutral text-neutral-content rounded-full`}
       >
