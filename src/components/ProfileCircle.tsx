@@ -19,7 +19,7 @@ export default function ProfileCircle(props: Props) {
         {profile.avatar ? (
           <Image
             src={profile.avatar}
-            alt={`${profile.username}'s avatar`}
+            alt={profile.username}
             width={4 * size}
             height={4 * size}
             style={{ margin: "0px" }}

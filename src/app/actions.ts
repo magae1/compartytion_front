@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 import {
   authSchema,
@@ -60,24 +60,6 @@ export async function changePassword(prevStat: any, formData: FormData) {
     return { ...prevStat, ...data };
   }
 
-  revalidatePath("/settings", "page");
-  return { ...prevStat, success: true, ...data };
-}
-
-export async function changeUsername(prevStat: any, formData: FormData) {
-  const accessToken = cookies().get(COOKIE_ACCESS)?.value;
-  const res = await fetch(BASE_URL + "/accounts/change_username/", {
-    method: "PATCH",
-    headers: { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` },
-    body: JSON.stringify({ username: formData.get("username") }),
-  });
-
-  const data = await res.json();
-  if (!res.ok) {
-    return { ...prevStat, ...data };
-  }
-
-  revalidatePath("/settings", "page");
   return { ...prevStat, success: true, ...data };
 }
 
@@ -103,7 +85,6 @@ export async function changeEmail(prevStat: any, formData: FormData) {
     return { ...prevStat, ...data };
   }
 
-  revalidatePath("/settings", "page");
   return { ...prevStat, success: true, ...data };
 }
 
@@ -127,7 +108,7 @@ export async function changeProfile(prevStat: any, formData: FormData) {
     return { success: false, ...data };
   }
 
-  revalidatePath("/", "layout");
+  revalidateTag("profile");
   return { success: true, ...data };
 }
 

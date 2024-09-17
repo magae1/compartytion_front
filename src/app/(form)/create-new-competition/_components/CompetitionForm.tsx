@@ -4,8 +4,8 @@ import { useFormState } from "react-dom";
 
 import { ProfileType } from "@/types";
 import { createCompetition } from "@/app/actions";
-import ProfileSearchForm from "@/app/(main)/(form)/create-new-competition/_components/ProfileSearchForm";
-import ProfileCard from "@/app/(main)/(form)/create-new-competition/_components/ProfileCard";
+import ProfileSearchForm from "@/app/(form)/create-new-competition/_components/ProfileSearchForm";
+import ProfileCard from "@/app/(form)/create-new-competition/_components/ProfileCard";
 
 const initialState: {
   title?: string[];
@@ -16,7 +16,7 @@ const initialState: {
   detail?: string;
 } = {};
 
-export default function Page() {
+export default function CompetitionForm() {
   const [state, formAction] = useFormState(createCompetition, initialState);
   const formRef = useRef<HTMLFormElement>(null);
   const [managers, setManagers] = useState<ProfileType[]>([]);
@@ -119,7 +119,7 @@ export default function Page() {
           <span className={"label-text"}>대회 관리자 초대</span>
         </div>
         <ProfileSearchForm addManager={addManager} />
-        <div className={"flex flex-col gap-y-1 min-h-12"}>
+        <div className={"flex flex-col min-h-12 my-2 shadow-inner rounded-lg"}>
           {managers.length > 0 ? (
             managers.map((v) => (
               <ProfileCard

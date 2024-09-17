@@ -15,7 +15,9 @@ export default function ProfileCard(props: Props) {
       onClick={() => handleDeletion(profile)}
     >
       <div className={"flex items-center space-x-3"}>
-        <ProfileCircle profile={profile} />
+        <div className={"w-10"}>
+          <ProfileCircle profile={profile} />
+        </div>
         <span>{profile.username}</span>
       </div>
       <div

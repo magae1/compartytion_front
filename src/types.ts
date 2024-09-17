@@ -1,9 +1,9 @@
 export type ProfileType = {
   username: string;
-  avatar: string | null;
-  introduction: string | null;
-  displayed_name: string | null;
-  hidden_name: string | null;
+  avatar?: string;
+  introduction?: string;
+  displayed_name?: string;
+  hidden_name?: string;
 };
 
 export type AccountType = {
@@ -19,28 +19,13 @@ export type CompetitionSimpleType = {
   title: string;
   created_at: Date;
   creator: ProfileType;
-  status: string;
+  status: "모집중" | "모집 마감" | "진행중" | "완료";
   is_team_game: boolean;
   introduction?: string;
+  num_of_participants: number;
+  num_of_applicants: number;
 };
 
 export interface CompetitionType extends CompetitionSimpleType {
-  managers: ProfileType[];
-  rule?: string;
-  tournament?: string;
   content?: string;
 }
-
-export type CompetitionCreationStoreType = {
-  activeStep: number;
-  data: {
-    title: string;
-    introduction: string;
-    rule: {
-      content: {};
-    };
-    tournament: {};
-    content: {};
-    is_team_game: boolean;
-  };
-};

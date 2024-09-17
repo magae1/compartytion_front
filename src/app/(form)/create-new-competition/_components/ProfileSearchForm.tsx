@@ -1,3 +1,4 @@
+"use client";
 import { useState, KeyboardEvent, ChangeEvent } from "react";
 import { MdSearch, MdAdd } from "react-icons/md";
 

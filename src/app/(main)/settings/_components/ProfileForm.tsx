@@ -8,24 +8,16 @@ import {
 } from "react";
 import { useFormState } from "react-dom";
 import Image from "next/image";
-import { MdAddAPhoto, MdInfo } from "react-icons/md";
+import { MdAddAPhoto } from "react-icons/md";
 import { FaLock, FaLockOpen } from "react-icons/fa6";
-import { toast } from "react-toastify";
 
 import { ProfileType } from "@/types";
 import { changeProfile } from "@/app/actions";
-
-const tooltip = {
-  display: "대회 참가자, 관리자 모두에게 보여지는 이름입니다.",
-  hidden: "대회 관리자에게만 보여지는 이름입니다.",
-};
 
 const initialState: {
   avatar?: string[];
   username?: string[];
   introduction?: string[];
-  displayed_name?: string[];
-  hidden_name?: string[];
   success?: boolean;
   detail?: string;
 } = {};
@@ -39,6 +31,7 @@ export default function ProfileForm(props: Props) {
   const [editable, setEditable] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [state, formAction] = useFormState(changeProfile, initialState);
+  const [showDetail, setShowDetail] = useState(false);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -55,9 +48,13 @@ export default function ProfileForm(props: Props) {
   }, []);
 
   useEffect(() => {
-    if (state.success) {
-      toast.success(state.detail ?? "");
-    }
+    setShowDetail(true);
+    const timer = setTimeout(() => {
+      setShowDetail(false);
+    }, 3000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [state]);
 
   return (
@@ -148,57 +145,10 @@ export default function ProfileForm(props: Props) {
             ))}
           </div>
         </label>
-        <label className={"form-control"}>
-          <div className={"label justify-start"}>
-            <span className={"label-text"}>공개 이름</span>
-            <div
-              className={"tooltip tooltip-info tooltip-right cursor-help ml-1"}
-              data-tip={tooltip.display}
-            >
-              <MdInfo size={18} />
-            </div>
-          </div>
-          <input
-            name={"displayed_name"}
-            defaultValue={profile.displayed_name ?? ""}
-            className={"input input-bordered"}
-            autoComplete={"off"}
-            disabled={!editable}
-          />
-          <div className={"label"}>
-            {state.displayed_name?.map((v: string) => (
-              <p key={v} className={"label-text-alt text-error"}>
-                {v}
-              </p>
-            ))}
-          </div>
-        </label>
-        <label className={"form-control"}>
-          <div className={"label justify-start"}>
-            <span className={"label-text"}>비공개 이름</span>
-            <div
-              className={"tooltip tooltip-info tooltip-right cursor-help ml-1"}
-              data-tip={tooltip.hidden}
-            >
-              <MdInfo size={18} />
-            </div>
-          </div>
-          <input
-            name={"hidden_name"}
-            defaultValue={profile.hidden_name ?? ""}
-            className={"input input-bordered"}
-            autoComplete={"off"}
-            disabled={!editable}
-          />
-          <div className={"label"}>
-            {state.hidden_name?.map((v: string) => (
-              <p key={v} className={"label-text-alt text-error"}>
-                {v}
-              </p>
-            ))}
-          </div>
-        </label>
-        <div className={"flex justify-end space-x-3"}>
+        <div className={"flex justify-end items-center space-x-3"}>
+          {showDetail && (
+            <span className={"text-success text-sm"}>{state.detail}</span>
+          )}
           <div
             onClick={toggleEditable}
             className={"btn btn-square btn-sm btn-accent"}
@@ -208,7 +158,7 @@ export default function ProfileForm(props: Props) {
           <button
             type={"submit"}
             disabled={!editable}
-            className={"btn hover:btn-success btn-sm"}
+            className={"btn btn-outline btn-sm"}
           >
             변경
           </button>

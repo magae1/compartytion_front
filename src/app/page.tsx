@@ -13,7 +13,7 @@ export default function Page() {
             </Link>
           </div>
           <div className={"flex-none"}>
-            <Link href={"/auth"} className={"btn btn-primary text-lg"}>
+            <Link href={"/auth"} className={"btn btn-primary btn-sm"}>
               로그인
             </Link>
           </div>
