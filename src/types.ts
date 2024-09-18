@@ -1,6 +1,9 @@
-export type ProfileType = {
+export type SimpleProfileType = {
   username: string;
   avatar?: string;
+};
+
+export type ProfileType = SimpleProfileType & {
   introduction?: string;
   displayed_name?: string;
   hidden_name?: string;
@@ -14,7 +17,7 @@ export type AccountType = {
   profile: ProfileType;
 };
 
-export type CompetitionSimpleType = {
+export type SimpleCompetitionType = {
   id: string;
   title: string;
   created_at: Date;
@@ -26,6 +29,6 @@ export type CompetitionSimpleType = {
   num_of_applicants: number;
 };
 
-export interface CompetitionType extends CompetitionSimpleType {
+export type CompetitionType = SimpleCompetitionType & {
   content?: string;
-}
+};

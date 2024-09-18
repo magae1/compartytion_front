@@ -1,11 +1,11 @@
 import React, { ReactNode, Suspense } from "react";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { MdMenu, MdArrowForward } from "react-icons/md";
 
 import AccountMenu from "@/components/AccountMenu";
-import { cookies } from "next/headers";
 import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
-import { ProfileType } from "@/types";
+import { SimpleProfileType } from "@/types";
 import ProfileCircle from "@/components/ProfileCircle";
 import TextCopyButton from "@/components/TextCopyButton";
 
@@ -114,7 +114,7 @@ async function AccountInfo() {
   if (!res.ok) {
     return null;
   }
-  const profile: ProfileType = await res.json();
+  const profile: SimpleProfileType = await res.json();
 
   return (
     <div

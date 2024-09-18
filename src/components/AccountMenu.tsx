@@ -3,8 +3,8 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 
 import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
-import { ProfileType } from "@/types";
-import LogoutBtn from "@/components/LogoutBtn";
+import { SimpleProfileType } from "@/types";
+import LogoutButton from "@/components/LogoutButton";
 import ProfileCircle from "@/components/ProfileCircle";
 
 export default async function AccountMenu() {
@@ -25,7 +25,7 @@ export default async function AccountMenu() {
       </Link>
     );
   }
-  const profileData: ProfileType = await res.json();
+  const profileData: SimpleProfileType = await res.json();
 
   return (
     <div className={"dropdown dropdown-end h-11"}>
@@ -45,7 +45,7 @@ export default async function AccountMenu() {
           <Link href={"/settings"}>설정</Link>
         </li>
         <li>
-          <LogoutBtn />
+          <LogoutButton />
         </li>
       </ul>
     </div>

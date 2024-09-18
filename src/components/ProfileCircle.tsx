@@ -1,10 +1,10 @@
 import React from "react";
 import Image from "next/image";
 
-import { ProfileType } from "@/types";
+import { SimpleProfileType } from "@/types";
 
 interface Props {
-  profile: ProfileType;
+  profile: SimpleProfileType;
   size?: number;
 }
 

@@ -2,7 +2,7 @@
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 
-export default function LogoutBtn() {
+export default function LogoutButton() {
   const router = useRouter();
 
   const logOut = useCallback(async () => {
