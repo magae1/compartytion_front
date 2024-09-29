@@ -1,8 +1,16 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Page() {
+  return (
+    <Suspense fallback={null}>
+      <AutoRouter />
+    </Suspense>
+  );
+}
+
+function AutoRouter() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);

@@ -4,8 +4,8 @@ import { useFormState } from "react-dom";
 
 import { ProfileType } from "@/types";
 import { createCompetition } from "@/app/actions";
-import ProfileSearchForm from "@/app/(form)/create-new-competition/_components/ProfileSearchForm";
-import ProfileCard from "@/app/(form)/create-new-competition/_components/ProfileCard";
+import ProfileSearchForm from "@/app/(form)/hold/competition/_components/ProfileSearchForm";
+import ProfileCard from "@/app/(form)/hold/competition/_components/ProfileCard";
 
 const initialState: {
   title?: string[];
@@ -16,7 +16,7 @@ const initialState: {
   detail?: string;
 } = {};
 
-export default function CompetitionForm() {
+export default function Page() {
   const [state, formAction] = useFormState(createCompetition, initialState);
   const formRef = useRef<HTMLFormElement>(null);
   const [managers, setManagers] = useState<ProfileType[]>([]);
@@ -73,15 +73,13 @@ export default function CompetitionForm() {
           </div>
           <textarea
             name={"introduction"}
-            className={"textarea textarea-bordered"}
+            className={"textarea textarea-bordered leading-5"}
             autoComplete={"off"}
           />
-          <div className={"label flex flex-col items-start"}>
-            {state?.introduction?.map((v: string) => (
-              <p key={v} className={"label-text-alt text-error"}>
-                {v}
-              </p>
-            ))}
+          <div className={"label justify-end"}>
+            <span className={"label-text-alt"}>
+              참가를 희망하는 사람들에게 대회에 대해서 간단하게 소개해주세요.
+            </span>
           </div>
         </label>
         <div className={"form-control group"}>
@@ -142,7 +140,7 @@ export default function CompetitionForm() {
           )}
         </div>
       </div>
-      <button className={"btn w-full"} onClick={clickSubmitButton}>
+      <button className={"btn w-full mb-10"} onClick={clickSubmitButton}>
         대회 만들기
       </button>
     </>
