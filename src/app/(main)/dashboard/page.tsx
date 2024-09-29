@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
-import { CompetitionSimpleType } from "@/types";
+import { SimpleCompetitionType } from "@/types";
 
 export default async function Page() {
   const accessToken = cookies().get(COOKIE_ACCESS);
@@ -17,13 +17,13 @@ export default async function Page() {
   if (!res.ok) {
     redirect("/auth");
   }
-  const competitionData: CompetitionSimpleType[] = await res.json();
+  const competitionData: SimpleCompetitionType[] = await res.json();
 
   return (
     <div className={"px-5 pt-5 grid grid-cols-3 gap-3"}>
       <div className={"col-span-full"}>
         <div className={"flex flex-col *:mb-4"}>
-          {competitionData.map((c: CompetitionSimpleType, index: number) => {
+          {competitionData.map((c: SimpleCompetitionType, index: number) => {
             return (
               <Link key={c.id} href={`/competitions/${c.id}`} className={"btn"}>
                 {c.title}

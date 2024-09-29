@@ -89,7 +89,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             </Suspense>
             <Link
               className={"btn btn-primary w-full"}
-              href={"/create-new-competition"}
+              href={"/hold/competition"}
             >
               새 대회 만들기 <MdArrowForward size={16} />
             </Link>

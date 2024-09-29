@@ -31,4 +31,6 @@ export type SimpleCompetitionType = {
 
 export type CompetitionType = SimpleCompetitionType & {
   content?: string;
+  is_manager: boolean;
+  creator_nickname: string;
 };
