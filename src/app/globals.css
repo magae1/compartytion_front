@@ -22,4 +22,8 @@
     .drawer-side {
         @apply z-20;
     }
+
+    .btm-nav-label {
+        @apply text-xs;
+    }
 }
