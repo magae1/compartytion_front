@@ -35,7 +35,7 @@ function AutoRouter() {
     } else {
       setMounted(true);
     }
-  }, [mounted]);
+  }, [mounted, searchParams]);
 
   return (
     <div className={"flex w-screen h-screen justify-center items-center"}>
