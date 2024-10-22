@@ -25,12 +25,12 @@ export type SimpleCompetitionType = {
   status: "모집중" | "모집 마감" | "진행중" | "완료";
   is_team_game: boolean;
   introduction?: string;
-  num_of_participants: number;
-  num_of_applicants: number;
 };
 
 export type CompetitionType = SimpleCompetitionType & {
   content?: string;
   is_manager: boolean;
   creator_nickname: string;
+  num_of_participants: number;
+  num_of_applicants: number;
 };
