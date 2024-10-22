@@ -3,11 +3,7 @@ import { useActionState, useEffect, useState } from "react";
 
 import { changeProfile } from "@/app/actions";
 import { ProfileType } from "@/types";
-
-const tooltip = {
-  display: "대회 참가자, 관리자 모두에게 보여지는 이름입니다.",
-  hidden: "대회 관리자에게만 보여지는 이름입니다.",
-};
+import { COMPETITION_TOOLTIPS } from "@/constants";
 
 const initialState: {
   displayed_name?: string[];
@@ -39,7 +35,9 @@ export default function CompetitionProfileForm({ profile }: Props) {
       <label className={"form-control"}>
         <div className={"label"}>
           <span className={"label-text"}>공개 이름</span>
-          <span className={"label-text-alt"}>{tooltip.display}</span>
+          <span className={"label-text-alt"}>
+            {COMPETITION_TOOLTIPS.DISPLAY}
+          </span>
         </div>
         <input
           name={"displayed_name"}
@@ -58,7 +56,9 @@ export default function CompetitionProfileForm({ profile }: Props) {
       <label className={"form-control"}>
         <div className={"label"}>
           <span className={"label-text"}>비공개 이름</span>
-          <span className={"label-text-alt"}>{tooltip.hidden}</span>
+          <span className={"label-text-alt"}>
+            {COMPETITION_TOOLTIPS.HIDDEN}
+          </span>
         </div>
         <input
           name={"hidden_name"}
