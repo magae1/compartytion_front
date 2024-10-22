@@ -8,8 +8,12 @@ import { CompetitionType } from "@/types";
 import ProfileCircle from "@/components/ProfileCircle";
 import ManagerContextSubscriber from "@/app/competitions/[id]/_components/ManagerContextSubscriber";
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const accessToken = cookies().get(COOKIE_ACCESS);
+type Params = Promise<{ id: string }>;
+
+export default async function Page(props: { params: Params }) {
+  const params = await props.params;
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(COOKIE_ACCESS);
   const res = await fetch(BASE_URL + `/competitions/${params.id}/`, {
     headers: {
       ...DEFAULT_HEADERS,

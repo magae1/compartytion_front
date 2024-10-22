@@ -1,5 +1,5 @@
 "use client";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { IoMailOutline } from "react-icons/io5";
 
 import SubmitButton from "@/components/SubmitButton";
@@ -7,7 +7,7 @@ import SubmitButton from "@/components/SubmitButton";
 const initialState: { email?: string[] } = {};
 
 export default function EmailForm({ action }: { action: any }) {
-  const [state, formAction] = useFormState(action, initialState);
+  const [state, formAction] = useActionState(action, initialState);
 
   return (
     <form action={formAction}>

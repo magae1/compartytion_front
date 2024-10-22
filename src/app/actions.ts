@@ -45,7 +45,8 @@ export async function changePassword(prevStat: any, formData: FormData) {
     return validatedFormData.error.flatten().fieldErrors;
   }
 
-  const accessToken = cookies().get(COOKIE_ACCESS)?.value;
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(COOKIE_ACCESS)?.value;
   const res = await fetch(BASE_URL + "/accounts/change_password/", {
     method: "PATCH",
     headers: { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` },
@@ -73,7 +74,8 @@ export async function changeEmail(prevStat: any, formData: FormData) {
     return validatedFormData.error.flatten().fieldErrors;
   }
 
-  const accessToken = cookies().get(COOKIE_ACCESS)?.value;
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(COOKIE_ACCESS)?.value;
   const res = await fetch(BASE_URL + "/accounts/change_email/", {
     method: "PATCH",
     headers: { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` },
@@ -94,7 +96,8 @@ export async function changeProfile(prevStat: any, formData: FormData) {
     formData.delete("avatar");
   }
 
-  const accessToken = cookies().get(COOKIE_ACCESS)?.value;
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(COOKIE_ACCESS)?.value;
   const res = await fetch(BASE_URL + "/accounts/change_profile/", {
     method: "PATCH",
     headers: {
@@ -127,7 +130,8 @@ export async function createCompetition(prevStat: any, formData: FormData) {
     return validatedFormData.error.flatten().fieldErrors;
   }
 
-  const accessToken = cookies().get(COOKIE_ACCESS)?.value;
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(COOKIE_ACCESS)?.value;
   const res = await fetch(BASE_URL + "/competitions/", {
     method: "POST",
     headers: { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` },
@@ -144,7 +148,8 @@ export async function createCompetition(prevStat: any, formData: FormData) {
 }
 
 export async function getProfile(username: string | null) {
-  const accessToken = cookies().get(COOKIE_ACCESS)?.value;
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(COOKIE_ACCESS)?.value;
   if (!accessToken || !username || username === "") {
     return { success: false };
   }
@@ -158,4 +163,16 @@ export async function getProfile(username: string | null) {
   }
   const data = await res.json();
   return await { success: true, ...data };
+}
+
+export async function applyToCompetition(prevStat: any, formData: FormData) {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(COOKIE_ACCESS)?.value;
+  const res = await fetch(BASE_URL + `/apply-to-competition/`, {
+    method: "POST",
+    headers: { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` },
+    body: JSON.stringify(formData),
+  });
+
+  if (!res.ok) return prevStat;
 }

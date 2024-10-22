@@ -1,6 +1,11 @@
 "use client";
-import { KeyboardEvent, useCallback, useRef, useState } from "react";
-import { useFormState } from "react-dom";
+import {
+  KeyboardEvent,
+  useCallback,
+  useRef,
+  useState,
+  useActionState,
+} from "react";
 
 import { ProfileType } from "@/types";
 import { createCompetition } from "@/app/actions";
@@ -17,8 +22,8 @@ const initialState: {
 } = {};
 
 export default function Page() {
-  const [state, formAction] = useFormState(createCompetition, initialState);
   const formRef = useRef<HTMLFormElement>(null);
+  const [state, formAction] = useActionState(createCompetition, initialState);
   const [managers, setManagers] = useState<ProfileType[]>([]);
 
   const addManager = (p: ProfileType) => {
@@ -28,7 +33,7 @@ export default function Page() {
           return a;
         }
         return [...a, b];
-      }, [] as ProfileType[]),
+      }, [] as ProfileType[])
     );
   };
 
@@ -44,7 +49,7 @@ export default function Page() {
 
   const clickSubmitButton = useCallback(() => {
     formRef.current?.requestSubmit();
-  }, [formRef.current]);
+  }, []);
 
   return (
     <>

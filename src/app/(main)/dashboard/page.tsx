@@ -6,7 +6,8 @@ import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
 import { SimpleCompetitionType } from "@/types";
 
 export default async function Page() {
-  const accessToken = cookies().get(COOKIE_ACCESS);
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(COOKIE_ACCESS);
   const res = await fetch(BASE_URL + "/competitions/me/", {
     headers: {
       ...DEFAULT_HEADERS,

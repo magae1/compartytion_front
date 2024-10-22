@@ -1,5 +1,5 @@
 "use client";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import {
   IoKeyOutline,
   IoKeySharp,
@@ -24,7 +24,7 @@ interface Props {
 }
 
 export default function SignUpForm({ email, action }: Props) {
-  const [state, formAction] = useFormState(action, initialState);
+  const [state, formAction] = useActionState(action, initialState);
 
   return (
     <form action={formAction}>

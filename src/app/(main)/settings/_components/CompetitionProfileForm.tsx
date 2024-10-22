@@ -1,9 +1,8 @@
 "use client";
-import { useFormState } from "react-dom";
+import { useActionState, useEffect, useState } from "react";
 
 import { changeProfile } from "@/app/actions";
 import { ProfileType } from "@/types";
-import { useEffect, useState } from "react";
 
 const tooltip = {
   display: "대회 참가자, 관리자 모두에게 보여지는 이름입니다.",
@@ -22,7 +21,7 @@ interface Props {
 }
 
 export default function CompetitionProfileForm({ profile }: Props) {
-  const [state, formAction] = useFormState(changeProfile, initialState);
+  const [state, formAction] = useActionState(changeProfile, initialState);
   const [showDetail, setShowDetail] = useState(false);
 
   useEffect(() => {

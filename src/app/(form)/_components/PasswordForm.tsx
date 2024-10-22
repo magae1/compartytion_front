@@ -1,6 +1,5 @@
 "use client";
-import { useEffect } from "react";
-import { useFormState } from "react-dom";
+import { useEffect, useActionState } from "react";
 import { toast } from "react-toastify";
 
 import { changePassword } from "@/app/actions";
@@ -15,7 +14,7 @@ const initialState: {
 } = {};
 
 export default function PasswordForm() {
-  const [state, formAction] = useFormState(changePassword, initialState);
+  const [state, formAction] = useActionState(changePassword, initialState);
 
   useEffect(() => {
     if (state.success) {

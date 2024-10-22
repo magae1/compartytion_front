@@ -1,5 +1,5 @@
 "use client";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { IoMailOutline, IoKeyOutline } from "react-icons/io5";
 
 import SubmitButton from "@/components/SubmitButton";
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function LogInForm({ email, action }: Props) {
-  const [state, formAction] = useFormState(action, initialState);
+  const [state, formAction] = useActionState(action, initialState);
 
   return (
     <form action={formAction}>

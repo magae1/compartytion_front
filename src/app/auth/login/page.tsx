@@ -12,14 +12,11 @@ import {
   DEFAULT_HEADERS,
 } from "@/constants";
 
-interface Props {
-  searchParams?: { [key: string]: string };
-}
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export default function Page(props: Props) {
-  const { searchParams } = props;
-  const email = searchParams?.email;
-  const signed_up = searchParams?.signed_up;
+export default async function Page(props: { searchParams: SearchParams }) {
+  const searchParams = await props.searchParams;
+  const email = searchParams.email;
 
   async function logIn(prevStat: any, formData: FormData) {
     "use server";
@@ -44,26 +41,30 @@ export default function Page(props: Props) {
     }
 
     // TODO: httpOnly -> true, secure -> true
-    cookies().set(COOKIE_ACCESS, data.access, {
+    const cookieStore = await cookies();
+    cookieStore.set(COOKIE_ACCESS, data.access, {
       httpOnly: false,
       secure: false,
       expires: (jwtDecode(data.access).exp ?? 0) * 1000,
     });
     const refreshExp = (jwtDecode(data.refresh).exp ?? 0) * 1000;
     // TODO: httpOnly -> true, secure -> true
-    cookies().set(COOKIE_REFRESH, data.refresh, {
+    cookieStore.set(COOKIE_REFRESH, data.refresh, {
       httpOnly: false,
       secure: false,
       path: "/api",
       expires: refreshExp,
     });
-    cookies().set(COOKIE_IS_AUTH, "true", { expires: refreshExp });
+    cookieStore.set(COOKIE_IS_AUTH, "true", { expires: refreshExp });
     redirect("/dashboard");
   }
 
   return (
     <div className={"grow"}>
-      <LogInForm email={email} action={logIn} />
+      <LogInForm
+        email={typeof email !== "string" ? undefined : email}
+        action={logIn}
+      />
     </div>
   );
 }

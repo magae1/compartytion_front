@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     body: JSON.stringify({ refresh: refreshToken }),
   });
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   if (!res.ok) {
     cookieStore.delete(COOKIE_ACCESS);
     cookieStore.delete(COOKIE_REFRESH);

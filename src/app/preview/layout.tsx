@@ -14,15 +14,19 @@ export default function Layout({ children }: { children: ReactNode }) {
             </Link>
           </div>
           <div className={"flex-none flex gap-x-2 sm:pr-1 md:pr-3"}>
-            <Suspense fallback={null}>
+            <Suspense
+              fallback={
+                <div
+                  className={"skeleton h-11 w-11 shrink-0 rounded-full"}
+                ></div>
+              }
+            >
               <AccountMenu />
             </Suspense>
           </div>
         </nav>
       </div>
-      <div className={"container px-5 pt-5 pb-8 max-w-96 w-full"}>
-        {children}
-      </div>
+      {children}
     </>
   );
 }

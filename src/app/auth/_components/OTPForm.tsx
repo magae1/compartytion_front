@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
-import { useFormState } from "react-dom";
+import { useEffect, useRef, useActionState } from "react";
 import { IoMailOutline } from "react-icons/io5";
 import { RiLockPasswordLine } from "react-icons/ri";
 
@@ -23,8 +22,8 @@ export default function OTPForm({ email, action }: Props) {
   const mounted = useRef<boolean>(false);
   const timerRef = useRef<FanyTimerType | null>(null);
   const otpButtonRef = useRef<HTMLButtonElement>(null);
-  const [state, formAction] = useFormState(action, initialState);
-  const [sentState, sendAction] = useFormState(sendOTP, initialSentState);
+  const [state, formAction] = useActionState(action, initialState);
+  const [sentState, sendAction] = useActionState(sendOTP, initialSentState);
 
   useEffect(() => {
     if (mounted.current) {

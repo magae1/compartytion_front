@@ -9,7 +9,8 @@ import ProfileForm from "@/app/(main)/settings/_components/ProfileForm";
 import CompetitionProfileForm from "@/app/(main)/settings/_components/CompetitionProfileForm";
 
 export default async function Page() {
-  const accessToken = cookies().get(COOKIE_ACCESS);
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(COOKIE_ACCESS);
   const res = await fetch(BASE_URL + "/accounts/me/", {
     headers: {
       ...DEFAULT_HEADERS,

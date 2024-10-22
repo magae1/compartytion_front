@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { COOKIE_ACCESS, COOKIE_IS_AUTH, COOKIE_REFRESH } from "@/constants";
 
 export async function POST() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   cookieStore.delete(COOKIE_ACCESS);
   cookieStore.delete(COOKIE_REFRESH);
   cookieStore.delete(COOKIE_IS_AUTH);

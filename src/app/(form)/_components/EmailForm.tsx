@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
-import { useFormState } from "react-dom";
+import { useEffect, useRef, useActionState } from "react";
 import { toast } from "react-toastify";
 
 import FancyTimer, { FanyTimerType } from "@/components/FancyTimer";
@@ -13,8 +12,8 @@ const initialSentState: { email?: string[]; remaining_time?: number } = {};
 export default function EmailForm() {
   const timerRef = useRef<FanyTimerType | null>(null);
   const otpButtonRef = useRef<HTMLButtonElement>(null);
-  const [state, formAction] = useFormState(changeEmail, initialState);
-  const [sentState, sendAction] = useFormState(sendOTP, initialSentState);
+  const [state, formAction] = useActionState(changeEmail, initialState);
+  const [sentState, sendAction] = useActionState(sendOTP, initialSentState);
 
   useEffect(() => {
     if (timerRef.current && sentState.remaining_time) {

@@ -101,7 +101,8 @@ export default function Layout({ children }: { children: ReactNode }) {
 }
 
 async function AccountInfo() {
-  const accessToken = cookies().get(COOKIE_ACCESS)?.value;
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(COOKIE_ACCESS)?.value;
 
   const res = await fetch(BASE_URL + "/profiles/me/", {
     headers: {

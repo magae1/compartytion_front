@@ -5,8 +5,8 @@ import {
   useCallback,
   useEffect,
   useState,
+  useActionState,
 } from "react";
-import { useFormState } from "react-dom";
 import Image from "next/image";
 import { MdAddAPhoto } from "react-icons/md";
 import { FaLock, FaLockOpen } from "react-icons/fa6";
@@ -30,7 +30,7 @@ export default function ProfileForm(props: Props) {
   const { profile } = props;
   const [editable, setEditable] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [state, formAction] = useFormState(changeProfile, initialState);
+  const [state, formAction] = useActionState(changeProfile, initialState);
   const [showDetail, setShowDetail] = useState(false);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
