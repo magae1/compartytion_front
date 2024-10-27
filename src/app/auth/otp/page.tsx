@@ -4,13 +4,14 @@ import OTPForm from "@/app/auth/_components/OTPForm";
 import { otpSchema } from "@/schemas";
 import { BASE_URL, DEFAULT_HEADERS } from "@/constants";
 
-interface Props {
-  searchParams?: { [key: string]: string };
-}
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export default function Page(props: Props) {
-  const { searchParams } = props;
-  const email = searchParams?.email;
+export default async function Page(props: { searchParams: SearchParams }) {
+  const searchParams = await props.searchParams;
+  let email: string = "";
+  if (typeof searchParams.email === "string") {
+    email = searchParams.email;
+  }
 
   async function verifyOTP(prevState: any, formData: FormData) {
     "use server";
