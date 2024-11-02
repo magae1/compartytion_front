@@ -3,18 +3,25 @@ import { redirect } from "next/navigation";
 
 import EmailForm from "@/app/auth/_components/EmailForm";
 import SocialAuth from "@/app/auth/_components/SocialAuth";
-import { authSchema } from "@/schemas";
+import { authSchema, AuthType } from "@/schemas";
 import { BASE_URL, DEFAULT_HEADERS } from "@/constants";
+import { ActionResType } from "@/types";
 
 export default function Page() {
-  async function checkEmail(prevState: any, formData: FormData) {
+  async function checkEmail(
+    prevState: any,
+    formData: FormData,
+  ): Promise<ActionResType<AuthType, any>> {
     "use server";
-    const validatedFormData = authSchema.safeParse({
-      email: formData.get("email"),
-    });
+    const value = Object.fromEntries(formData) as AuthType;
+    const validatedFormData = authSchema.safeParse(value);
 
     if (!validatedFormData.success) {
-      return validatedFormData.error.flatten().fieldErrors;
+      return {
+        value: value,
+        message: validatedFormData.error.flatten().fieldErrors,
+        isError: true,
+      };
     }
 
     const res = await fetch(BASE_URL + "/auth/check_email/", {
@@ -25,7 +32,7 @@ export default function Page() {
 
     const data = await res.json();
     if (!res.ok) {
-      return data;
+      return { value: value, message: data, isError: true };
     }
 
     if (data.exists) {

@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
 
 import SignUpForm from "@/app/auth/_components/SignUpForm";
-import { signUpSchema } from "@/schemas";
+import { signUpSchema, SignupType } from "@/schemas";
 import { BASE_URL, DEFAULT_HEADERS } from "@/constants";
+import { ActionResType } from "@/types";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
@@ -13,17 +14,20 @@ export default async function Page(props: { searchParams: SearchParams }) {
     email = searchParams.email;
   }
 
-  async function signUp(prevState: any, formData: FormData) {
+  async function signUp(
+    prevState: any,
+    formData: FormData,
+  ): Promise<ActionResType<SignupType, any>> {
     "use server";
-    const validatedFormData = signUpSchema.safeParse({
-      email: formData.get("email"),
-      password: formData.get("password"),
-      confirm: formData.get("confirm"),
-      username: formData.get("username"),
-    });
+    const value = Object.fromEntries(formData) as SignupType;
+    const validatedFormData = signUpSchema.safeParse(value);
 
     if (!validatedFormData.success) {
-      return validatedFormData.error.flatten().fieldErrors;
+      return {
+        value: value,
+        message: validatedFormData.error.flatten().fieldErrors,
+        isError: true,
+      };
     }
 
     const res = await fetch(BASE_URL + "/auth/signup/", {
@@ -38,7 +42,7 @@ export default async function Page(props: { searchParams: SearchParams }) {
 
     const data = await res.json();
     if (!res.ok) {
-      return data;
+      return { value: value, message: data, isError: true };
     }
     redirect(`/auth/login?email=${data.email}&signed_up=${true}`);
   }

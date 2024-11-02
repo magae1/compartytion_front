@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useActionState } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 import FancyTimer, { FanyTimerType } from "@/components/FancyTimer";
@@ -10,23 +11,33 @@ const initialState: { email?: string[]; otp?: string[] } = {};
 const initialSentState: { email?: string[]; remaining_time?: number } = {};
 
 export default function EmailForm() {
+  const router = useRouter();
   const timerRef = useRef<FanyTimerType | null>(null);
   const otpButtonRef = useRef<HTMLButtonElement>(null);
-  const [state, formAction] = useActionState(changeEmail, initialState);
-  const [sentState, sendAction] = useActionState(sendOTP, initialSentState);
+  const [state, formAction] = useActionState(changeEmail, {
+    value: { email: "", otp: "" },
+    message: initialState,
+    isError: false,
+  });
+  const [sentState, sendAction] = useActionState(sendOTP, {
+    value: { email: "" },
+    message: initialSentState,
+    isError: false,
+  });
 
   useEffect(() => {
-    if (timerRef.current && sentState.remaining_time) {
-      timerRef.current.reset(sentState.remaining_time);
+    if (timerRef.current && sentState.value.remaining_time) {
+      timerRef.current.reset(sentState.value.remaining_time);
     }
-    if (timerRef.current && sentState.email) {
+    if (timerRef.current && sentState.message.email) {
       timerRef.current.reset(0);
     }
   }, [sentState]);
 
   useEffect(() => {
-    if (state.success) {
-      toast.success(state.detail ?? "");
+    if (!state.isError && state.message.detail) {
+      toast.success(state.message.detail ?? "");
+      router.back();
     }
   }, [state]);
 
@@ -40,18 +51,20 @@ export default function EmailForm() {
           name={"email"}
           className={"input input-bordered"}
           autoComplete={"off"}
+          defaultValue={sentState.value.email}
         />
         <div className={"label flex flex-col items-start"}>
-          {state?.email?.map((v: string) => (
-            <p key={v} className={"label-text-alt text-error"}>
-              {v}
-            </p>
-          ))}
-          {sentState?.email?.map((v: string) => (
-            <p key={v} className={"label-text-alt text-error"}>
-              {v}
-            </p>
-          ))}
+          {state.message.email
+            ? state.message.email?.map((v: string) => (
+                <p key={v} className={"label-text-alt text-error"}>
+                  {v}
+                </p>
+              ))
+            : sentState.message.email?.map((v: string) => (
+                <p key={v} className={"label-text-alt text-error"}>
+                  {v}
+                </p>
+              ))}
         </div>
       </label>
       <label className={"form-control"}>
@@ -76,7 +89,7 @@ export default function EmailForm() {
       </label>
       <div className={"flex"}>
         <div className={"label flex-1"}>
-          {state?.otp?.map((v: string) => (
+          {state.message.otp?.map((v: string) => (
             <p key={v} className={"label-text-alt text-error"}>
               {v}
             </p>

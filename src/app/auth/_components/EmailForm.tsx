@@ -3,11 +3,24 @@ import { useActionState } from "react";
 import { IoMailOutline } from "react-icons/io5";
 
 import SubmitButton from "@/components/SubmitButton";
+import { ActionResType } from "@/types";
+import { AuthType } from "@/schemas";
 
 const initialState: { email?: string[] } = {};
 
-export default function EmailForm({ action }: { action: any }) {
-  const [state, formAction] = useActionState(action, initialState);
+interface Props {
+  action: (
+    prev: any,
+    formData: FormData,
+  ) => Promise<ActionResType<AuthType, any>>;
+}
+
+export default function EmailForm(props: Props) {
+  const [state, formAction] = useActionState(props.action, {
+    value: { email: "" },
+    message: initialState,
+    isError: false,
+  });
 
   return (
     <form action={formAction}>
@@ -16,12 +29,13 @@ export default function EmailForm({ action }: { action: any }) {
         <input
           name={"email"}
           className={"grow"}
-          placeholder={"이메일 주소를 입력해주세요."}
+          placeholder={"이메일 주소를 입력해주세요"}
           autoComplete={"username"}
+          defaultValue={state.value.email}
         />
       </label>
       <div className={"label"}>
-        {state?.email?.map((v: string) => (
+        {state.message.email?.map((v: string) => (
           <p key={v} className={"label-text-alt text-error"}>
             {v}
           </p>

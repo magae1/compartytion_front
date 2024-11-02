@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 
 import LogInForm from "@/app/auth/_components/LogInForm";
-import { logInSchema } from "@/schemas";
+import { logInSchema, LogInType } from "@/schemas";
 import {
   BASE_URL,
   COOKIE_ACCESS,
@@ -11,6 +11,7 @@ import {
   COOKIE_REFRESH,
   DEFAULT_HEADERS,
 } from "@/constants";
+import { ActionResType } from "@/types";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
@@ -18,15 +19,20 @@ export default async function Page(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;
   const email = searchParams.email;
 
-  async function logIn(prevStat: any, formData: FormData) {
+  async function logIn(
+    prevStat: any,
+    formData: FormData,
+  ): Promise<ActionResType<LogInType, any>> {
     "use server";
-    const validatedFormData = logInSchema.safeParse({
-      email: formData.get("email"),
-      password: formData.get("password"),
-    });
+    const value = Object.fromEntries(formData) as LogInType;
+    const validatedFormData = logInSchema.safeParse(value);
 
     if (!validatedFormData.success) {
-      return validatedFormData.error.flatten().fieldErrors;
+      return {
+        value: value,
+        message: validatedFormData.error.flatten().fieldErrors,
+        isError: true,
+      };
     }
 
     const res = await fetch(BASE_URL + "/auth/login/", {
@@ -37,7 +43,11 @@ export default async function Page(props: { searchParams: SearchParams }) {
 
     const data = await res.json();
     if (!res.ok) {
-      return { password: ["비밀번호를 확인해주세요."] };
+      return {
+        value: value,
+        message: { password: ["비밀번호를 확인해주세요."] },
+        isError: true,
+      };
     }
 
     // TODO: httpOnly -> true, secure -> true

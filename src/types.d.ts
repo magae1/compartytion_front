@@ -34,3 +34,9 @@ export type CompetitionType = SimpleCompetitionType & {
   num_of_participants: number;
   num_of_applicants: number;
 };
+
+export type ActionResType<V, E> = {
+  value: V;
+  message: E;
+  isError: boolean;
+};

@@ -11,9 +11,6 @@ type Params = Promise<{ id: string }>;
 
 export default async function Page(props: { params: Params }) {
   const params = await props.params;
-  if (typeof params.id !== "string") {
-    notFound();
-  }
 
   const res = await fetch(BASE_URL + `/competitions/${params.id}/preview`, {
     headers: {
@@ -39,7 +36,7 @@ export default async function Page(props: { params: Params }) {
       </div>
       <h1 className={"text-5xl font-bold mb-7"}>{competition.title}</h1>
       <div
-        className={"grid grid-cols-1 sm:grid-cols-3 gap-y-2 sm:gap-x-1 mb-3"}
+        className={"grid grid-cols-1 sm:grid-cols-3 gap-y-2 sm:gap-x-1 mb-5"}
       >
         <div className={"col-span-2 flex items-center space-x-3"}>
           <ProfileCircle profile={competition.creator} size={12} />
@@ -55,20 +52,31 @@ export default async function Page(props: { params: Params }) {
             .format("YY년 MMM DD일(dd)")}
         </span>
       </div>
-      {competition.introduction && (
-        <p className={"min-h-10 border border-gray-500/10 rounded p-3"}>
-          {competition.introduction}
-        </p>
-      )}
-      <div className={"flex justify-center space-x-3"}>
-        {competition.status === "모집중" && (
-          <Link
-            href={`/enroll/competition?competition_id=${competition.id}`}
-            className={"btn btn-wide no-underline"}
-          >
-            참가 신청하러 가기
-          </Link>
-        )}
+      <p
+        className={"min-h-40 border border-gray-500/10 rounded px-3 py-2 mb-5"}
+      >
+        {competition.introduction}
+      </p>
+      <div className={"flex"}>
+        <div className={"flex flex-col mx-auto"}>
+          {competition.status === "모집중" && (
+            <>
+              <Link
+                href={`/entrance/competitions/${competition.id}/`}
+                className={"btn btn-wide no-underline"}
+              >
+                대회에 들어가기
+              </Link>
+              <div className={"divider text-xs"}>또는</div>
+              <Link
+                href={`/enroll/competitions/${competition.id}/`}
+                className={"btn btn-wide no-underline"}
+              >
+                참가 신청하러 가기
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </main>
   );

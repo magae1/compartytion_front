@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
 
 import OTPForm from "@/app/auth/_components/OTPForm";
-import { otpSchema } from "@/schemas";
+import { otpSchema, OTPType } from "@/schemas";
 import { BASE_URL, DEFAULT_HEADERS } from "@/constants";
+import { ActionResType } from "@/types";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
@@ -13,15 +14,20 @@ export default async function Page(props: { searchParams: SearchParams }) {
     email = searchParams.email;
   }
 
-  async function verifyOTP(prevState: any, formData: FormData) {
+  async function verifyOTP(
+    prevState: any,
+    formData: FormData,
+  ): Promise<ActionResType<OTPType, any>> {
     "use server";
-    const validatedFormData = otpSchema.safeParse({
-      email: formData.get("email"),
-      otp: formData.get("otp"),
-    });
+    const value = Object.fromEntries(formData) as OTPType;
+    const validatedFormData = otpSchema.safeParse(value);
 
     if (!validatedFormData.success) {
-      return validatedFormData.error.flatten().fieldErrors;
+      return {
+        value: value,
+        message: validatedFormData.error.flatten().fieldErrors,
+        isError: true,
+      };
     }
 
     const res = await fetch(BASE_URL + "/auth/verify_otp/", {
@@ -32,10 +38,10 @@ export default async function Page(props: { searchParams: SearchParams }) {
 
     const data = await res.json();
     if (!res.ok) {
-      return data;
+      return { value: value, message: data, isError: true };
     }
     redirect(`/auth/signup?email=${data.email}`);
   }
 
-  return <OTPForm email={email} action={verifyOTP} />;
+  return <OTPForm email={email} verifyOTPAction={verifyOTP} />;
 }

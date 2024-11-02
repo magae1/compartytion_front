@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       </div>
       <main className={"h-full"}>
         <div
-          className={"container pt-24 sm:pt-36 md:pt-48 flex justify-center"}
+          className={"container pt-12 sm:pt-24 md:pt-36 flex justify-center"}
         >
           <div className={"w-full max-w-80"}>{children}</div>
         </div>

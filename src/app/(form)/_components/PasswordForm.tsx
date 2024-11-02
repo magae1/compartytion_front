@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useActionState } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 import { changePassword } from "@/app/actions";
@@ -10,15 +11,24 @@ const initialState: {
   password?: string[];
   new_password?: string[];
   new_password_confirmation?: string[];
-  success?: boolean;
 } = {};
 
 export default function PasswordForm() {
-  const [state, formAction] = useActionState(changePassword, initialState);
+  const router = useRouter();
+  const [state, formAction] = useActionState(changePassword, {
+    value: {
+      password: "",
+      new_password: "",
+      new_password_confirmation: "",
+    },
+    message: initialState,
+    isError: false,
+  });
 
   useEffect(() => {
-    if (state.success) {
-      toast.success(state.detail ?? "");
+    if (!state.isError && state.message.detail) {
+      toast.success(state.message.detail ?? "");
+      router.back();
     }
   }, [state]);
 
@@ -33,9 +43,10 @@ export default function PasswordForm() {
           name={"password"}
           className={"input input-bordered"}
           autoComplete={"off"}
+          defaultValue={state.value.password}
         />
         <div className={"label flex flex-col items-start"}>
-          {state.password?.map((v: string) => (
+          {state.message.password?.map((v: string) => (
             <p key={v} className={"label-text-alt text-error"}>
               {v}
             </p>
@@ -51,9 +62,10 @@ export default function PasswordForm() {
           name={"new_password"}
           className={"input input-bordered"}
           autoComplete={"new-password"}
+          defaultValue={state.value.new_password}
         />
         <div className={"label flex flex-col items-start"}>
-          {state.new_password?.map((v: string) => (
+          {state.message.new_password?.map((v: string) => (
             <p key={v} className={"label-text-alt text-error"}>
               {v}
             </p>
@@ -67,12 +79,13 @@ export default function PasswordForm() {
 
         <input
           type={"password"}
-          name={"new_password"}
+          name={"new_password_confirmation"}
           className={"input input-bordered"}
           autoComplete={"new-password"}
+          defaultValue={state.value.new_password_confirmation}
         />
         <div className={"label flex flex-col items-start"}>
-          {state.new_password_confirmation?.map((v: string) => (
+          {state.message.new_password_confirmation?.map((v: string) => (
             <p key={v} className={"label-text-alt text-error"}>
               {v}
             </p>

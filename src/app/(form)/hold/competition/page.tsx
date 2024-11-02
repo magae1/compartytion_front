@@ -17,13 +17,20 @@ const initialState: {
   introduction?: string[];
   is_team_game?: string[];
   managers?: string[];
-  success?: boolean;
   detail?: string;
 } = {};
 
 export default function Page() {
   const formRef = useRef<HTMLFormElement>(null);
-  const [state, formAction] = useActionState(createCompetition, initialState);
+  const [state, formAction] = useActionState(createCompetition, {
+    value: {
+      title: "",
+      is_team_game: false,
+      managers: [],
+    },
+    message: initialState,
+    isError: false,
+  });
   const [managers, setManagers] = useState<ProfileType[]>([]);
 
   const addManager = (p: ProfileType) => {
@@ -33,7 +40,7 @@ export default function Page() {
           return a;
         }
         return [...a, b];
-      }, [] as ProfileType[])
+      }, [] as ProfileType[]),
     );
   };
 
@@ -63,9 +70,10 @@ export default function Page() {
             className={"input input-bordered"}
             autoComplete={"off"}
             onKeyDown={preventEnterKey}
+            defaultValue={state.value.title}
           />
           <div className={"label flex flex-col items-start"}>
-            {state?.title?.map((v: string) => (
+            {state.message.title?.map((v: string) => (
               <p key={v} className={"label-text-alt text-error"}>
                 {v}
               </p>
@@ -80,6 +88,7 @@ export default function Page() {
             name={"introduction"}
             className={"textarea textarea-bordered leading-5"}
             autoComplete={"off"}
+            defaultValue={state.value.introduction}
           />
           <div className={"label justify-end"}>
             <span className={"label-text-alt"}>
@@ -96,6 +105,7 @@ export default function Page() {
                 type={"checkbox"}
                 name={"is_team_game"}
                 className={"toggle peer"}
+                defaultChecked={state.value.is_team_game}
               />
               <span>팀</span>
             </label>

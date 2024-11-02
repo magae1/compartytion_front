@@ -6,6 +6,8 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import FancyTimer, { FanyTimerType } from "@/components/FancyTimer";
 import SubmitButton from "@/components/SubmitButton";
 import { sendOTP } from "@/app/actions";
+import { ActionResType } from "@/types";
+import { OTPType } from "@/schemas";
 
 const initialState: { email?: string[]; otp: string[] } = {
   otp: ["이메일로 전송된 OTP를 입력해주세요."],
@@ -15,15 +17,26 @@ const initialSentState: { email?: string[]; remaining_time?: number } = {};
 
 interface Props {
   email?: string;
-  action: any;
+  verifyOTPAction: (
+    prev: any,
+    formData: FormData,
+  ) => Promise<ActionResType<OTPType, any>>;
 }
 
-export default function OTPForm({ email, action }: Props) {
+export default function OTPForm({ email, verifyOTPAction }: Props) {
   const mounted = useRef<boolean>(false);
   const timerRef = useRef<FanyTimerType | null>(null);
   const otpButtonRef = useRef<HTMLButtonElement>(null);
-  const [state, formAction] = useActionState(action, initialState);
-  const [sentState, sendAction] = useActionState(sendOTP, initialSentState);
+  const [state, formAction] = useActionState(verifyOTPAction, {
+    value: { otp: "", email: email ?? "" },
+    message: initialState,
+    isError: false,
+  });
+  const [sentState, sendAction] = useActionState(sendOTP, {
+    value: { email: email ?? "" },
+    message: initialSentState,
+    isError: false,
+  });
 
   useEffect(() => {
     if (mounted.current) {
@@ -34,10 +47,10 @@ export default function OTPForm({ email, action }: Props) {
   }, []);
 
   useEffect(() => {
-    if (timerRef.current && sentState.remaining_time) {
-      timerRef.current.reset(sentState.remaining_time);
+    if (timerRef.current && sentState.value.remaining_time) {
+      timerRef.current.reset(sentState.value.remaining_time);
     }
-    if (timerRef.current && sentState.email) {
+    if (timerRef.current && sentState.message.email) {
       timerRef.current.reset(0);
     }
   }, [sentState]);
@@ -50,22 +63,23 @@ export default function OTPForm({ email, action }: Props) {
           <input
             name={"email"}
             className={"grow"}
-            defaultValue={email}
+            defaultValue={sentState.value.email}
             placeholder={"이메일 주소를 입력해주세요."}
             autoComplete={"username"}
           />
         </label>
         <div className={"label"}>
-          {state?.email?.map((v: string) => (
-            <p key={v} className={"label-text-alt text-error"}>
-              {v}
-            </p>
-          ))}
-          {sentState?.email?.map((v: string) => (
-            <p key={v} className={"label-text-alt text-error"}>
-              {v}
-            </p>
-          ))}
+          {state.message.email
+            ? state.message.email.map((v: string) => (
+                <p key={v} className={"label-text-alt text-error"}>
+                  {v}
+                </p>
+              ))
+            : sentState.message.email?.map((v: string) => (
+                <p key={v} className={"label-text-alt text-error"}>
+                  {v}
+                </p>
+              ))}
         </div>
       </div>
       <div className={"flex"}>
@@ -89,7 +103,7 @@ export default function OTPForm({ email, action }: Props) {
       </div>
       <div className={"flex"}>
         <div className={"label flex-1"}>
-          {state?.otp?.map((v: string) => (
+          {state.message.otp?.map((v: string) => (
             <p key={v} className={"label-text-alt text-error"}>
               {v}
             </p>

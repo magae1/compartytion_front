@@ -30,7 +30,7 @@ export default function ProfileSearchForm(props: Props) {
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      searchProfile();
+      searchProfile().then();
     }
   };
 

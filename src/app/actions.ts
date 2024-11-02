@@ -8,16 +8,28 @@ import {
   changePasswordSchema,
   otpSchema,
   createCompetitionSchema,
+  applyToCompetitionSchema,
+  ApplicantType,
+  ChangePasswordType,
+  OTPType,
+  CompetitionCreationType,
 } from "@/schemas";
+import { ActionResType, SimpleCompetitionType } from "@/types";
 import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
 
-export async function sendOTP(prevState: any, formData: FormData) {
-  const validatedFormData = authSchema.safeParse({
-    email: formData.get("email"),
-  });
+export async function sendOTP(
+  prevState: any,
+  formData: FormData,
+): Promise<ActionResType<{ email: string; remaining_time?: number }, any>> {
+  const value = Object.fromEntries(formData) as { email: string };
+  const validatedFormData = authSchema.safeParse(value);
 
   if (!validatedFormData.success) {
-    return validatedFormData.error.flatten().fieldErrors;
+    return {
+      value: value,
+      message: validatedFormData.error.flatten().fieldErrors,
+      isError: true,
+    };
   }
 
   const res = await fetch(BASE_URL + "/auth/request_otp/", {
@@ -28,21 +40,24 @@ export async function sendOTP(prevState: any, formData: FormData) {
 
   const data = await res.json();
   if (!res.ok) {
-    return data;
+    return { value: value, message: data, isError: true };
   }
-
-  return { remaining_time: data.remaining_time };
+  return { value: data, message: {}, isError: false };
 }
 
-export async function changePassword(prevStat: any, formData: FormData) {
-  const validatedFormData = changePasswordSchema.safeParse({
-    password: formData.get("password"),
-    new_password: formData.get("new_password"),
-    new_password_confirmation: formData.get("new_password_confirmation"),
-  });
+export async function changePassword(
+  prevStat: any,
+  formData: FormData,
+): Promise<ActionResType<ChangePasswordType, any>> {
+  const value = Object.fromEntries(formData) as ChangePasswordType;
+  const validatedFormData = changePasswordSchema.safeParse(value);
 
   if (!validatedFormData.success) {
-    return validatedFormData.error.flatten().fieldErrors;
+    return {
+      value: value,
+      message: validatedFormData.error.flatten().fieldErrors,
+      isError: true,
+    };
   }
 
   const cookieStore = await cookies();
@@ -58,20 +73,25 @@ export async function changePassword(prevStat: any, formData: FormData) {
 
   const data = await res.json();
   if (!res.ok) {
-    return { ...prevStat, ...data };
+    return { value: value, message: { ...prevStat, ...data }, isError: true };
   }
 
-  return { ...prevStat, success: true, ...data };
+  return { value: value, message: { ...prevStat, ...data }, isError: false };
 }
 
-export async function changeEmail(prevStat: any, formData: FormData) {
-  const validatedFormData = otpSchema.safeParse({
-    email: formData.get("email"),
-    otp: formData.get("otp"),
-  });
+export async function changeEmail(
+  prevStat: any,
+  formData: FormData,
+): Promise<ActionResType<OTPType, any>> {
+  const value = Object.fromEntries(formData) as OTPType;
+  const validatedFormData = otpSchema.safeParse(value);
 
   if (!validatedFormData.success) {
-    return validatedFormData.error.flatten().fieldErrors;
+    return {
+      value: value,
+      message: validatedFormData.error.flatten().fieldErrors,
+      isError: true,
+    };
   }
 
   const cookieStore = await cookies();
@@ -84,13 +104,23 @@ export async function changeEmail(prevStat: any, formData: FormData) {
 
   const data = await res.json();
   if (!res.ok) {
-    return { ...prevStat, ...data };
+    return {
+      value: value,
+      message: {
+        ...prevStat,
+        ...data,
+      },
+      isError: true,
+    };
   }
 
-  return { ...prevStat, success: true, ...data };
+  return { value: value, message: { ...prevStat, ...data }, isError: false };
 }
 
-export async function changeProfile(prevStat: any, formData: FormData) {
+export async function changeProfile(
+  prevStat: any,
+  formData: FormData,
+): Promise<ActionResType<null, any>> {
   const file = formData.get("avatar") as File | null;
   if (!file || !file.name || file.size == 0) {
     formData.delete("avatar");
@@ -108,26 +138,38 @@ export async function changeProfile(prevStat: any, formData: FormData) {
 
   const data = await res.json();
   if (!res.ok) {
-    return { success: false, ...data };
+    return { value: null, isError: true, message: { ...data } };
   }
 
   revalidateTag("profile");
-  return { success: true, ...data };
+  return { value: null, isError: false, message: { ...data } };
 }
 
-export async function createCompetition(prevStat: any, formData: FormData) {
+export async function createCompetition(
+  prevStat: any,
+  formData: FormData,
+): Promise<ActionResType<CompetitionCreationType, any>> {
   const title = formData.get("title") as string;
   const managers = formData.get("managers") as string;
-  const introduction = formData.get("introduction") as string;
+  const introduction = formData.get("introduction") as string | undefined;
   const validatedFormData = createCompetitionSchema.safeParse({
     title: title ? title : null,
-    introduction: introduction ? introduction : null,
+    introduction: introduction ? introduction : undefined,
     is_team_game: formData.get("is_team_game") === "on",
     managers: managers ? [...managers.split(",")] : [],
   });
 
   if (!validatedFormData.success) {
-    return validatedFormData.error.flatten().fieldErrors;
+    return {
+      value: {
+        title: title,
+        managers: [],
+        introduction: introduction,
+        is_team_game: formData.get("is_team_game") === "on",
+      },
+      message: validatedFormData.error.flatten().fieldErrors,
+      isError: true,
+    };
   }
 
   const cookieStore = await cookies();
@@ -140,7 +182,16 @@ export async function createCompetition(prevStat: any, formData: FormData) {
 
   const data = await res.json();
   if (!res.ok) {
-    return { ...prevStat, success: false, ...data };
+    return {
+      value: {
+        title: title,
+        managers: [],
+        introduction: introduction,
+        is_team_game: formData.get("is_team_game") === "on",
+      },
+      message: { ...prevStat, ...data },
+      isError: true,
+    };
   }
 
   revalidatePath("/dashboard");
@@ -165,14 +216,44 @@ export async function getProfile(username: string | null) {
   return await { success: true, ...data };
 }
 
-export async function applyToCompetition(prevStat: any, formData: FormData) {
+export async function applyToCompetition(
+  prevStat: any,
+  formData: FormData,
+): Promise<ActionResType<ApplicantType, any>> {
+  const value = Object.fromEntries(formData) as ApplicantType;
   const cookieStore = await cookies();
+  const validatedFormData = applyToCompetitionSchema.safeParse(value);
+
+  if (!validatedFormData.success) {
+    return {
+      value: value,
+      message: validatedFormData.error.flatten().fieldErrors,
+      isError: true,
+    };
+  }
+
   const accessToken = cookieStore.get(COOKIE_ACCESS)?.value;
-  const res = await fetch(BASE_URL + `/apply-to-competition/`, {
+  const res = await fetch(BASE_URL + `/applicants/register/`, {
     method: "POST",
     headers: { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` },
-    body: JSON.stringify(formData),
+    body: JSON.stringify(validatedFormData.data),
   });
 
-  if (!res.ok) return prevStat;
+  const data = await res.json();
+  return { value: value, message: data, isError: !res.ok };
+}
+
+export async function getCompetitionData(
+  competitionId: string,
+): Promise<SimpleCompetitionType | null> {
+  const res = await fetch(BASE_URL + `/competitions/${competitionId}/preview`, {
+    headers: {
+      ...DEFAULT_HEADERS,
+    },
+  });
+
+  if (!res.ok) {
+    return null;
+  }
+  return res.json();
 }
