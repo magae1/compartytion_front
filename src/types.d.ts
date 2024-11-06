@@ -35,6 +35,41 @@ export type CompetitionType = SimpleCompetitionType & {
   num_of_applicants: number;
 };
 
+export type ApplicantType = {
+  id: number;
+  profile: SimpleProfileType | null;
+  email: string;
+  displayed_name: string;
+  hidden_name: string;
+  introduction: string;
+  applied_at: Date;
+};
+
+export type ManagerType = {
+  id: number;
+  profile: SimpleProfileType;
+  nickname: string;
+  handle_rules: boolean;
+  handle_content: boolean;
+  handle_applicants: boolean;
+  handle_participants: boolean;
+  accepted: boolean;
+};
+
+export type SimpleParticipantType = {
+  id: number;
+  profile: SimpleProfileType | null;
+  order: number;
+  displayed_name: string;
+};
+
+export type ParticipantType = {
+  hidden_name: string;
+  introduction: string;
+  joined_at: Date;
+  last_login_at: Date;
+} & SimpleParticipantType;
+
 export type ActionResType<V, E> = {
   value: V;
   message: E;

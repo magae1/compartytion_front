@@ -7,7 +7,7 @@ import ManagerContextProvider from "@/app/competitions/[id]/_components/ManagerC
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <ManagerContextProvider>
-      <div className={"drawer md:drawer-open"}>
+      <div className={"drawer lg:drawer-open"}>
         <input
           id={"competition-drawer"}
           type={"checkbox"}
@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         />
         <div className={"drawer-content"}>
           <main>{children}</main>
-          <div className={"btm-nav md:hidden"}>
+          <div className={"btm-nav lg:hidden"}>
             <BottomNavButtons />
           </div>
         </div>
