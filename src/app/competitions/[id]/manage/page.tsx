@@ -70,7 +70,13 @@ export default async function Page(props: {
           </Link>
         ))}
       </div>
-      <Suspense fallback={<div>123</div>}>
+      <Suspense
+        fallback={
+          <div className={"w-full flex justify-center py-12"}>
+            <span className={"loading loading-bars loading-md"}></span>
+          </div>
+        }
+      >
         {idx == 0 ? (
           <ParticipantTable competitionId={id} />
         ) : idx == 1 ? (

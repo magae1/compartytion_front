@@ -17,7 +17,11 @@ interface Props {
 }
 
 export default function CompetitionProfileForm({ profile }: Props) {
-  const [state, formAction] = useActionState(changeProfile, initialState);
+  const [state, formAction] = useActionState(changeProfile, {
+    value: null,
+    isError: false,
+    message: initialState,
+  });
   const [showDetail, setShowDetail] = useState(false);
 
   useEffect(() => {
@@ -46,7 +50,7 @@ export default function CompetitionProfileForm({ profile }: Props) {
           autoComplete={"off"}
         />
         <div className={"label"}>
-          {state.displayed_name?.map((v: string) => (
+          {state.message.displayed_name?.map((v: string) => (
             <p key={v} className={"label-text-alt text-error"}>
               {v}
             </p>
@@ -67,7 +71,7 @@ export default function CompetitionProfileForm({ profile }: Props) {
           autoComplete={"off"}
         />
         <div className={"label"}>
-          {state.hidden_name?.map((v: string) => (
+          {state.message.hidden_name?.map((v: string) => (
             <p key={v} className={"label-text-alt text-error"}>
               {v}
             </p>
@@ -76,7 +80,7 @@ export default function CompetitionProfileForm({ profile }: Props) {
       </label>
       <div className={"flex justify-end items-center space-x-3"}>
         {showDetail && (
-          <span className={"text-success text-sm"}>{state.detail}</span>
+          <span className={"text-success text-sm"}>{state.message.detail}</span>
         )}
         <button className={"btn btn-sm btn-outline"}>변경</button>
       </div>

@@ -63,15 +63,17 @@ export default async function ApplicantTable(props: Props) {
               <tr key={v.id}>
                 <td>{i + 1}</td>
                 <td>
-                  {v.profile ? (
+                  {v.account ? (
                     <div className={"flex items-center gap-3"}>
-                      <ProfileCircle profile={v.profile} />
+                      <ProfileCircle profile={v.account.profile} />
                       <div className={"hidden sm:block"}>
-                        <div className={"font-bold"}>{v.profile.username}</div>
+                        <div className={"font-bold"}>
+                          {v.account.profile.username}
+                        </div>
                       </div>
                     </div>
                   ) : (
-                    <div className={"badge badge-ghost"}>비회원</div>
+                    <div className={"unauthenticated-badge"}>비회원</div>
                   )}
                 </td>
                 <td>{v.displayed_name}</td>

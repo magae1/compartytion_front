@@ -22,7 +22,7 @@ export default async function Page(props: { params: Params }) {
   });
 
   if (!res.ok) {
-    redirect(`/competitions/preview?competition_id=${params.id}`);
+    redirect(`/preview/competitions/${params.id}/`);
   }
 
   const competition: CompetitionType = await res.json();
@@ -40,13 +40,13 @@ export default async function Page(props: { params: Params }) {
       <h1>{competition.title}</h1>
       <div className={"grid grid-cols-1 sm:grid-cols-3 gap-y-2 sm:gap-x-1"}>
         <div className={"col-span-2 flex items-center space-x-3"}>
-          <ProfileCircle profile={competition.creator} size={12} />
+          <ProfileCircle profile={competition.creator.profile} size={12} />
           <div className={"flex flex-col"}>
             <span className={"truncate font-medium"}>
               {competition.creator_nickname}
             </span>
             <span className={"text-xs truncate"}>
-              ID: {competition.creator.username}
+              ID: {competition.creator.profile.username}
             </span>
           </div>
         </div>
@@ -55,6 +55,43 @@ export default async function Page(props: { params: Params }) {
             .locale("ko")
             .format("YY년 MMM DD일(dd)")}
         </span>
+      </div>
+      <div className={"overflow-x-auto"}>
+        <table className={"table"}>
+          <thead>
+            <tr>
+              <th colSpan={2}>참가자 목록</th>
+            </tr>
+          </thead>
+          <tbody>
+            {competition.participants.length == 0 ? (
+              <tr>
+                <td colSpan={2}>참가자가 없습니다.</td>
+              </tr>
+            ) : (
+              competition.participants.map((v, i) => (
+                <tr key={v.id}>
+                  <td>{v.order}</td>
+                  <td>
+                    {v.account ? (
+                      <div className={"flex items-center gap-3"}>
+                        <ProfileCircle profile={v.account.profile} />
+                        <div className={"font-bold"}>
+                          {v.account.profile.username}
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        <div className={"unauthenticated-badge"}>비회원</div>
+                        <span>{v.displayed_name}</span>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
       <ManagerContextSubscriber isManager={competition.is_manager} />
     </div>

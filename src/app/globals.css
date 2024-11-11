@@ -26,4 +26,8 @@
     .btm-nav-label {
         @apply text-xs;
     }
+
+    .unauthenticated-badge {
+        @apply badge badge-ghost my-2.5;
+    }
 }

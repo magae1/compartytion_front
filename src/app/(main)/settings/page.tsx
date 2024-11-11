@@ -7,6 +7,7 @@ import { AccountType } from "@/types";
 import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
 import ProfileForm from "@/app/(main)/settings/_components/ProfileForm";
 import CompetitionProfileForm from "@/app/(main)/settings/_components/CompetitionProfileForm";
+import ProfileAvatarForm from "@/app/(main)/settings/_components/ProfileAvatarForm";
 
 export default async function Page() {
   const cookieStore = await cookies();
@@ -27,8 +28,13 @@ export default async function Page() {
     <div className={"flex flex-col px-5 md:pl-10 py-5 max-w-screen-md"}>
       <h1 className={"text-5xl font-bold mt-3 mb-7"}>설정</h1>
       <h2 className={"text-xl font-semibold pb-3"}>프로필 설정</h2>
-      <div>
-        <ProfileForm profile={accountData.profile} />
+      <div className={"flex flex-wrap sm:space-x-5"}>
+        <div className={"flex flex-col space-y-3 w-3/5 sm:w-1/3"}>
+          <ProfileAvatarForm profile={accountData.profile} />
+        </div>
+        <div className={"flex-1 w-min-240"}>
+          <ProfileForm profile={accountData.profile} />
+        </div>
       </div>
       <div className={"divider"}></div>
       <h2 className={"text-xl font-semibold pb-3"}>참가 신청 템플릿 설정</h2>

@@ -18,11 +18,12 @@ const initialState: {
   displayed_name?: string[];
   hidden_name?: string[];
   introduction?: string[];
+  detail?: string;
 } = {};
 
 export default function CompetitionApplicationForm(props: Props) {
   const { competitionId, account } = props;
-  const [state, formAction, isPending] = useActionState(applyToCompetition, {
+  const [state, formAction] = useActionState(applyToCompetition, {
     value: {
       competition: competitionId,
       access_id: "",
@@ -191,6 +192,11 @@ export default function CompetitionApplicationForm(props: Props) {
             ))}
           </div>
         </label>
+        {state.message.detail && (
+          <p className={"label-text-alt text-error mb-1"}>
+            {state.message.detail}
+          </p>
+        )}
         <SubmitButton>참가 신청하기</SubmitButton>
       </form>
     </>

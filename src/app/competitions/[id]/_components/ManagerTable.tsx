@@ -73,9 +73,11 @@ export default async function ManagerTable(props: Props) {
                   <td>{i + 1}</td>
                   <td>
                     <div className={"flex items-center gap-3"}>
-                      <ProfileCircle profile={v.profile} />
+                      <ProfileCircle profile={v.account.profile} />
                       <div className={"hidden sm:block"}>
-                        <div className={"font-bold"}>{v.profile.username}</div>
+                        <div className={"font-bold"}>
+                          {v.account.profile.username}
+                        </div>
                       </div>
                     </div>
                   </td>
@@ -116,7 +118,7 @@ export default async function ManagerTable(props: Props) {
               <tr>
                 <td colSpan={tableHeaders.length}>
                   <p className={"text-center my-10"}>
-                    승인 대기 중인 매니저가 없습니다.
+                    수락 대기 중인 매니저가 없습니다.
                   </p>
                 </td>
               </tr>
@@ -126,9 +128,11 @@ export default async function ManagerTable(props: Props) {
                   <td>{i + 1}</td>
                   <td>
                     <div className={"flex items-center gap-3"}>
-                      <ProfileCircle profile={v.profile} />
+                      <ProfileCircle profile={v.account.profile} />
                       <div className={"hidden sm:block"}>
-                        <div className={"font-bold"}>{v.profile.username}</div>
+                        <div className={"font-bold"}>
+                          {v.account.profile.username}
+                        </div>
                       </div>
                     </div>
                   </td>

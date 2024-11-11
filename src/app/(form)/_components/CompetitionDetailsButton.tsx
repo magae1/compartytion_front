@@ -38,10 +38,10 @@ export default function CompetitionDetailsButton({
         <h3 className={"text-3xl font-bold mb-5"}>{competition.title}</h3>
         <div className={"grid grid-cols-3 mb-3"}>
           <div className={"col-span-2 flex items-center space-x-3"}>
-            <ProfileCircle profile={competition.creator} />
+            <ProfileCircle profile={competition.creator.profile} />
             <div className={"flex flex-col"}>
               <span className={"truncate font-medium"}>
-                {competition.creator.username}
+                {competition.creator.profile.username}
               </span>
             </div>
           </div>

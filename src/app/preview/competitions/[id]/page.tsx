@@ -39,10 +39,10 @@ export default async function Page(props: { params: Params }) {
         className={"grid grid-cols-1 sm:grid-cols-3 gap-y-2 sm:gap-x-1 mb-5"}
       >
         <div className={"col-span-2 flex items-center space-x-3"}>
-          <ProfileCircle profile={competition.creator} size={12} />
+          <ProfileCircle profile={competition.creator.profile} size={12} />
           <div className={"flex flex-col"}>
             <span className={"truncate font-medium"}>
-              {competition.creator.username}
+              {competition.creator.profile.username}
             </span>
           </div>
         </div>

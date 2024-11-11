@@ -17,11 +17,17 @@ export type AccountType = {
   profile: ProfileType;
 };
 
+export type SimpleAccountType = {
+  id: number;
+  email: string;
+  profile: ProfileType;
+};
+
 export type SimpleCompetitionType = {
   id: string;
   title: string;
   created_at: Date;
-  creator: ProfileType;
+  creator: SimpleAccountType;
   status: "모집중" | "모집 마감" | "진행중" | "완료";
   is_team_game: boolean;
   introduction?: string;
@@ -33,11 +39,12 @@ export type CompetitionType = SimpleCompetitionType & {
   creator_nickname: string;
   num_of_participants: number;
   num_of_applicants: number;
+  participants: SimpleParticipantType[];
 };
 
 export type ApplicantType = {
   id: number;
-  profile: SimpleProfileType | null;
+  account: SimpleAccountType | null;
   email: string;
   displayed_name: string;
   hidden_name: string;
@@ -47,7 +54,7 @@ export type ApplicantType = {
 
 export type ManagerType = {
   id: number;
-  profile: SimpleProfileType;
+  account: SimpleAccountType;
   nickname: string;
   handle_rules: boolean;
   handle_content: boolean;
@@ -58,7 +65,7 @@ export type ManagerType = {
 
 export type SimpleParticipantType = {
   id: number;
-  profile: SimpleProfileType | null;
+  account: SimpleAccountType | null;
   order: number;
   displayed_name: string;
 };

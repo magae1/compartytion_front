@@ -121,11 +121,6 @@ export async function changeProfile(
   prevStat: any,
   formData: FormData,
 ): Promise<ActionResType<null, any>> {
-  const file = formData.get("avatar") as File | null;
-  if (!file || !file.name || file.size == 0) {
-    formData.delete("avatar");
-  }
-
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(COOKIE_ACCESS)?.value;
   const res = await fetch(BASE_URL + "/accounts/change_profile/", {
@@ -233,14 +228,18 @@ export async function applyToCompetition(
   }
 
   const accessToken = cookieStore.get(COOKIE_ACCESS)?.value;
-  const res = await fetch(BASE_URL + `/applicants/register/`, {
+  const res = await fetch(BASE_URL + "/applications/register/", {
     method: "POST",
     headers: { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` },
     body: JSON.stringify(validatedFormData.data),
   });
 
-  const data = await res.json();
-  return { value: value, message: data, isError: !res.ok };
+  if (!res.ok) {
+    const data = await res.json();
+    return { value: value, message: data, isError: true };
+  }
+
+  redirect(`/preview/competitions/${value.competition}/`);
 }
 
 export async function getCompetitionData(
