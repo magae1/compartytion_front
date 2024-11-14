@@ -6,6 +6,7 @@ import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
 import { SimpleProfileType } from "@/types";
 import LogoutButton from "@/components/LogoutButton";
 import ProfileCircle from "@/components/ProfileCircle";
+import ThemeToggleButton from "@/components/ThemeToggleButton";
 
 export default async function AccountMenu() {
   const cookieStore = await cookies();
@@ -36,7 +37,7 @@ export default async function AccountMenu() {
       <ul
         tabIndex={0}
         className={
-          "dropdown-content menu bg-base-200 rounded-box z-[1] w-52 p-2 shadow"
+          "dropdown-content menu bg-base-200 rounded-box z-[1] w-40 p-2 shadow"
         }
       >
         <li>
@@ -44,6 +45,9 @@ export default async function AccountMenu() {
         </li>
         <li>
           <Link href={"/settings"}>설정</Link>
+        </li>
+        <li>
+          <ThemeToggleButton />
         </li>
         <li>
           <LogoutButton />
