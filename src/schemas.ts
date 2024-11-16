@@ -107,3 +107,7 @@ export const applyToCompetitionSchema = competitionEntranceSchema.extend({
   introduction: z.string({}),
 });
 export type ApplicantType = z.infer<typeof applyToCompetitionSchema>;
+
+export const inviteManagerSchema = z.object({
+  usernames: z.string().array(),
+});

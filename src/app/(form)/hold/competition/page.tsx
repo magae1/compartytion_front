@@ -106,9 +106,7 @@ export default function Page() {
         <input
           hidden
           name={"managers"}
-          value={managers.map((m) => m.username)}
-          multiple
-          readOnly
+          value={managers.map((v) => v.username).join(",")}
         />
       </form>
       <div className={"my-5"}>

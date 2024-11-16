@@ -9,6 +9,7 @@ import {
   otpSchema,
   createCompetitionSchema,
   applyToCompetitionSchema,
+  inviteManagerSchema,
   ApplicantType,
   ChangePasswordType,
   OTPType,
@@ -255,4 +256,45 @@ export async function getCompetitionData(
     return null;
   }
   return res.json();
+}
+
+export async function inviteManagers(
+  prevStat: any,
+  formData: FormData,
+): Promise<ActionResType<null, { usernames?: string[]; detail?: string }>> {
+  const cookieStore = await cookies();
+  const competition_id = formData.get("competition_id") as string;
+  const usernames: string = formData.get("usernames") as string;
+
+  const validatedFormData = inviteManagerSchema.safeParse({
+    usernames: usernames ? [...usernames.split(",")] : [],
+  });
+
+  if (!validatedFormData.success) {
+    return {
+      value: null,
+      message: validatedFormData.error.flatten().fieldErrors,
+      isError: true,
+    };
+  }
+
+  const accessToken = cookieStore.get(COOKIE_ACCESS)?.value;
+  const res = await fetch(
+    BASE_URL + `/competitions/${competition_id}/invite_managers/`,
+    {
+      method: "POST",
+      headers: {
+        ...DEFAULT_HEADERS,
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(validatedFormData.data),
+    },
+  );
+
+  const data = await res.json();
+  if (!res.ok) {
+    return { value: null, message: data, isError: true };
+  }
+  revalidateTag("managers");
+  return { value: null, message: data, isError: false };
 }

@@ -84,7 +84,7 @@ export default async function ManagerTable(props: Props) {
                   <td>{v.nickname}</td>
                   <td>
                     <form action={deleteManager}>
-                      <input hidden name={"manager_id"} value={v.id} />
+                      <input hidden name={"manager_id"} defaultValue={v.id} />
                       <button className={"btn btn-outline btn-error btn-sm"}>
                         취소
                       </button>
@@ -139,7 +139,7 @@ export default async function ManagerTable(props: Props) {
                   <td>{v.nickname}</td>
                   <td>
                     <form action={deleteManager}>
-                      <input hidden name={"manager_id"} value={v.id} />
+                      <input hidden name={"manager_id"} defaultValue={v.id} />
                       <button className={"btn btn-outline btn-error btn-sm"}>
                         취소
                       </button>

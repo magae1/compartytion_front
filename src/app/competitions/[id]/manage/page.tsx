@@ -16,7 +16,6 @@ type TabType = {
 };
 const tabList: TabType[] = [
   { url: "participants", name: "참가자 관리" },
-  // { url: "teams", name: "참가 팀 관리" },
   { url: "applicants", name: "신청자 관리" },
   { url: "managers", name: "관리자 관리" },
 ];
@@ -84,7 +83,7 @@ export default async function Page(props: {
         ) : idx == 2 ? (
           <>
             <div className={"my-3"}>
-              <AddManagerModal />
+              <AddManagerModal competition_id={id} />
             </div>
             <ManagerTable competitionId={id} deleteManager={deleteManager} />
           </>
