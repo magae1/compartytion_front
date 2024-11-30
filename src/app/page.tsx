@@ -2,6 +2,8 @@ import React from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
 
+import Editor from "@/components/Editor";
+
 export default function Page() {
   return (
     <>
@@ -20,7 +22,14 @@ export default function Page() {
         </nav>
       </div>
       <main>
-        <div style={{ height: "1666px" }}>123</div>
+        <div
+          style={{ height: "1666px" }}
+          className={"flex justify-center px-5"}
+        >
+          <div className={"max-w-md"}>
+            <Editor />
+          </div>
+        </div>
         <footer className={"footer prose footer-center text-base-content p-4"}>
           <aside>
             <p>{`Copyright © 컴파티션${dayjs().year()}`}</p>

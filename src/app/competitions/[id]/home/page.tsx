@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 
@@ -22,7 +22,10 @@ export default async function Page(props: { params: Params }) {
   });
 
   if (!res.ok) {
-    redirect(`/preview/competitions/${params.id}/`);
+    if (res.status == 401) {
+      redirect(`/preview/competitions/${params.id}/`);
+    }
+    notFound();
   }
 
   const competition: CompetitionType = await res.json();
