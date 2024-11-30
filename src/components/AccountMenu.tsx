@@ -30,7 +30,7 @@ export default async function AccountMenu() {
   const profileData: SimpleProfileType = await res.json();
 
   return (
-    <div className={"dropdown dropdown-end h-11"}>
+    <div className={"dropdown dropdown-end"}>
       <div tabIndex={0} role={"button"} className={"btn btn-circle"}>
         <ProfileCircle profile={profileData} />
       </div>

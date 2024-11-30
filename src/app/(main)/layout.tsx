@@ -8,6 +8,7 @@ import { BASE_URL, COOKIE_ACCESS, DEFAULT_HEADERS } from "@/constants";
 import { SimpleProfileType } from "@/types";
 import ProfileCircle from "@/components/ProfileCircle";
 import TextCopyButton from "@/components/TextCopyButton";
+import CompetitionSearchBar from "@/components/CompetitionSearchBar";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -19,7 +20,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       />
       <div className={"drawer-content"}>
         <div className={"sticky-header"}>
-          <nav className={"navbar"}>
+          <nav className={"navbar space-x-3 sm:pr-1 md:pr-3"}>
             <div className={"flex-none lg:hidden"}>
               <label
                 htmlFor={"dashboard-drawer"}
@@ -29,7 +30,10 @@ export default function Layout({ children }: { children: ReactNode }) {
               </label>
             </div>
             <div className={"flex-1"}></div>
-            <div className={"flex-none flex gap-x-2 sm:pr-1 md:pr-3"}>
+            <div className={"flex-none"}>
+              <CompetitionSearchBar />
+            </div>
+            <div className={"flex-none"}>
               <Suspense
                 fallback={
                   <div

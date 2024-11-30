@@ -180,7 +180,7 @@ export default function CompetitionApplicationForm(props: Props) {
           </div>
           <input
             name={"email"}
-            defaultValue={account ? account.email : ""}
+            defaultValue={account ? account.email : state.value.email}
             className={"input input-bordered"}
             autoComplete={"off"}
           />

@@ -21,10 +21,10 @@ export default async function Page() {
   const competitionData: SimpleCompetitionType[] = await res.json();
 
   return (
-    <div className={"px-5 pt-5 grid grid-cols-3 gap-3"}>
+    <div className={"px-5 pt-5 grid grid-cols-1 md:grid-cols-3 gap-3"}>
       <div className={"col-span-full"}>
         <div className={"flex flex-col *:mb-4"}>
-          {competitionData.map((c: SimpleCompetitionType, index: number) => {
+          {competitionData.map((c: SimpleCompetitionType) => {
             return (
               <Link key={c.id} href={`/competitions/${c.id}`} className={"btn"}>
                 {c.title}

@@ -231,7 +231,9 @@ export async function applyToCompetition(
   const accessToken = cookieStore.get(COOKIE_ACCESS)?.value;
   const res = await fetch(BASE_URL + "/applications/register/", {
     method: "POST",
-    headers: { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` },
+    headers: accessToken
+      ? { ...DEFAULT_HEADERS, Authorization: `Bearer ${accessToken}` }
+      : DEFAULT_HEADERS,
     body: JSON.stringify(validatedFormData.data),
   });
 
@@ -247,9 +249,7 @@ export async function getCompetitionData(
   competitionId: string,
 ): Promise<SimpleCompetitionType | null> {
   const res = await fetch(BASE_URL + `/competitions/${competitionId}/preview`, {
-    headers: {
-      ...DEFAULT_HEADERS,
-    },
+    headers: DEFAULT_HEADERS,
   });
 
   if (!res.ok) {
